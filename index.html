@@ -1,34 +1,171 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es-AR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#101820">
 <title>Vietnam · Taiwán · Japón 2026 — Bitácora del viaje</title>
-<style>html,body{margin:0;min-height:100%;background:#101820;color:#f7f2e7;font-family:system-ui,sans-serif}.boot{min-height:100vh;display:grid;place-items:center;padding:24px;text-align:center}.boot small{opacity:.65}</style>
+<style>
+  html,body{margin:0;width:100%;height:100%;background:#101820;overflow:hidden}
+  #site{display:block;width:100%;height:100%;border:0;background:#F7F2E7;opacity:0;transition:opacity .16s ease}
+  #site.ready{opacity:1}
+  #boot{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;color:#F7F2E7;font:500 14px system-ui,sans-serif;letter-spacing:.01em}
+</style>
 </head>
 <body>
-<div class="boot"><div>Cargando bitácora…<br><small>Vietnam · Taiwán · Japón 2026</small></div></div>
+<div id="boot">Cargando bitácora…</div>
+<iframe id="site" src="site.html" title="Vietnam, Taiwán y Japón 2026"></iframe>
 <script>
-(async function(){
-  const PDFS = [
-    ["Perth → Hanoi","https://drive.google.com/file/d/1NKUVLbh5ionuN_2KO-xt08KpgIQ22xRJ/view?usp=sharing"],
-    ["Tokyo → Hanoi","https://drive.google.com/file/d/1epa4TfSMFw4SnvViT5SvbL_CLl4Vz0HR/view?usp=sharing"],
-    ["Hanoi → Da Nang","https://drive.google.com/file/d/1VoaAjVU37ww15meZJN384EL8VbDfBGLw/view?usp=sharing"],
-    ["Da Nang → Taipei → Osaka","https://drive.google.com/file/d/1kC8V2_taDyDbymZs7UgcHstWifJdIfkH/view?usp=sharing"],
-    ["Narita → Christchurch","https://drive.google.com/file/d/114hX3KXnVZ3X6RVZ-6EtL1lZiOT0lHlh/view?usp=sharing"],
-    ["Buenos Aires ⇄ Tokyo","https://drive.google.com/file/d/1BbgHUdNLmSKXliQeA-hntVsG0t8HS4lm/view?usp=sharing"],
-    ["Tầm Vị","https://drive.google.com/file/d/16oDmT-qAbgConRoP885jK4hGsZ0VHr-R/view?usp=sharing"]
+(function(){
+  'use strict';
+  var frame=document.getElementById('site');
+  var boot=document.getElementById('boot');
+
+  var PDF_LINKS=[
+    {match:'Perth → Hanoi',url:'https://drive.google.com/file/d/1NKUVLbh5ionuN_2KO-xt08KpgIQ22xRJ/view?usp=sharing'},
+    {match:'Tokyo → Hanoi',url:'https://drive.google.com/file/d/1epa4TfSMFw4SnvViT5SvbL_CLl4Vz0HR/view?usp=sharing'},
+    {match:'Hanoi → Da Nang',url:'https://drive.google.com/file/d/1VoaAjVU37ww15meZJN384EL8VbDfBGLw/view?usp=sharing'},
+    {match:'Da Nang → Taipei → Osaka',url:'https://drive.google.com/file/d/1kC8V2_taDyDbymZs7UgcHstWifJdIfkH/view?usp=sharing'},
+    {match:'Narita → Christchurch',url:'https://drive.google.com/file/d/114hX3KXnVZ3X6RVZ-6EtL1lZiOT0lHlh/view?usp=sharing'},
+    {match:'Buenos Aires ⇄ Tokyo',url:'https://drive.google.com/file/d/1BbgHUdNLmSKXliQeA-hntVsG0t8HS4lm/view?usp=sharing'},
+    {match:'Tầm Vị',url:'https://drive.google.com/file/d/16oDmT-qAbgConRoP885jK4hGsZ0VHr-R/view?usp=sharing'}
   ];
-  const res = await fetch("site.html", {cache:"no-store"});
-  if(!res.ok) throw new Error("No se pudo cargar la bitácora");
-  let html = await res.text();
-  const patch = `<script>(function(){const PDFS=${JSON.stringify(PDFS)};function patchPdfLinks(){document.querySelectorAll('a.pdf-chip').forEach(function(a){const label=(a.getAttribute('aria-label')||a.textContent||'');for(const item of PDFS){if(label.includes(item[0])){a.href=item[1];a.target='_blank';a.rel='noopener noreferrer';break;}}});}document.addEventListener('DOMContentLoaded',patchPdfLinks);new MutationObserver(patchPdfLinks).observe(document.documentElement,{childList:true,subtree:true});patchPdfLinks();})();<\/script>`;
-  html = html.replace("</body>", patch + "</body>");
-  document.open();
-  document.write(html);
-  document.close();
-})().catch(function(err){document.body.innerHTML='<div class="boot"><div>No se pudo cargar el viaje.<br><small>'+String(err.message||err)+'</small></div></div>';});
+
+  var GROUP_META={
+    'Vuelos':{icon:'✈️',hint:'Pasajes, conexiones y comprobantes'},
+    'Alojamiento':{icon:'🛏️',hint:'Hoteles y departamentos'},
+    'Tours y excursiones':{icon:'🧭',hint:'Actividades y experiencias reservadas'},
+    'Restaurantes':{icon:'🍜',hint:'Mesas y experiencias gastronómicas'},
+    'Otros':{icon:'🎟️',hint:'Otras reservas del viaje'}
+  };
+  var GROUP_ORDER=['Vuelos','Alojamiento','Tours y excursiones','Restaurantes','Otros'];
+
+  function injectStyles(doc){
+    if(doc.getElementById('github-live-patch')) return;
+    var style=doc.createElement('style');
+    style.id='github-live-patch';
+    style.textContent='\n'+
+      '.cover{height:clamp(122px,24vw,168px)!important;aspect-ratio:auto!important;max-height:none!important}\n'+
+      '.cover img{object-position:center 38%!important}\n'+
+      '.res-sort-note{font-size:12px;color:var(--text-muted);margin:-8px 2px 12px}\n'+
+      '.res-accordion-group{background:#fff;border:1px solid var(--paper-line);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);margin:0 0 10px;overflow:hidden}\n'+
+      '.res-accordion-summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:13px 14px;user-select:none}\n'+
+      '.res-accordion-summary::-webkit-details-marker{display:none}\n'+
+      '.res-accordion-icon{width:34px;height:34px;border-radius:10px;background:var(--paper-2);display:flex;align-items:center;justify-content:center;font-size:17px;flex:none}\n'+
+      '.res-accordion-text{min-width:0;flex:1;display:flex;flex-direction:column;gap:1px}\n'+
+      '.res-accordion-text strong{font-size:14px;color:var(--text)}\n'+
+      '.res-accordion-text small{font-size:11.5px;color:var(--text-muted);font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}\n'+
+      '.res-accordion-count{min-width:25px;height:25px;padding:0 7px;border-radius:20px;background:var(--paper-2);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:11.5px;font-weight:700}\n'+
+      '.res-accordion-chev{flex:none;color:var(--text-muted);transition:transform .2s ease}\n'+
+      '.res-accordion-group[open] .res-accordion-chev{transform:rotate(90deg)}\n'+
+      '.res-accordion-body{padding:2px 10px 10px;border-top:1px solid var(--paper-line);background:linear-gradient(to bottom,rgba(239,231,212,.32),rgba(247,242,231,.18) 38px,transparent 120px)}\n'+
+      '.res-accordion-body .res-card{margin-top:10px;margin-bottom:0}\n'+
+      '.res-card__date-emphasis{color:var(--text);font-weight:600}\n'+
+      '@media(prefers-reduced-motion:reduce){.res-accordion-chev{transition:none}}';
+    doc.head.appendChild(style);
+  }
+
+  function patchPdfLinks(doc){
+    doc.querySelectorAll('a.pdf-chip').forEach(function(a){
+      var text=(a.textContent||'').replace(/\s+/g,' ').trim();
+      PDF_LINKS.some(function(item){
+        if(text.indexOf(item.match)!==-1){
+          a.href=item.url;
+          a.target='_blank';
+          a.rel='noopener noreferrer';
+          a.removeAttribute('download');
+          return true;
+        }
+        return false;
+      });
+    });
+  }
+
+  function groupReservations(doc){
+    var panel=doc.getElementById('panel-reservas');
+    if(!panel || panel.querySelector('.res-accordion-group')) return;
+
+    var children=Array.prototype.slice.call(panel.children);
+    var currentBody=null;
+    var groups=[];
+
+    children.forEach(function(el){
+      if(el.classList && el.classList.contains('cat-title')){
+        var name=(el.textContent||'').trim();
+        var meta=GROUP_META[name]||GROUP_META.Otros;
+        var count=0;
+        var cursor=el.nextElementSibling;
+        while(cursor && !(cursor.classList && cursor.classList.contains('cat-title'))){
+          if(cursor.classList && cursor.classList.contains('res-card')) count++;
+          cursor=cursor.nextElementSibling;
+        }
+
+        var details=doc.createElement('details');
+        details.className='res-accordion-group';
+        details.dataset.group=name;
+        var summary=doc.createElement('summary');
+        summary.className='res-accordion-summary';
+        summary.innerHTML='<span class="res-accordion-icon" aria-hidden="true">'+meta.icon+'</span>'+
+          '<span class="res-accordion-text"><strong></strong><small></small></span>'+
+          '<span class="res-accordion-count">'+count+'</span>'+
+          '<svg class="res-accordion-chev" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>';
+        summary.querySelector('strong').textContent=name;
+        summary.querySelector('small').textContent=meta.hint;
+        var body=doc.createElement('div');
+        body.className='res-accordion-body';
+        details.appendChild(summary);
+        details.appendChild(body);
+        panel.insertBefore(details,el);
+        el.remove();
+        currentBody=body;
+        groups.push(details);
+      }else if(currentBody && el.classList && el.classList.contains('res-card')){
+        var sub=el.querySelector('.res-card__sub');
+        if(sub){
+          var br=sub.querySelector('br');
+          if(br && br.nextSibling && br.nextSibling.nodeType===3){
+            var span=doc.createElement('span');
+            span.className='res-card__date-emphasis';
+            span.textContent=br.nextSibling.nodeValue;
+            sub.replaceChild(span,br.nextSibling);
+          }
+        }
+        currentBody.appendChild(el);
+      }
+    });
+
+    groups.sort(function(a,b){
+      return GROUP_ORDER.indexOf(a.dataset.group)-GROUP_ORDER.indexOf(b.dataset.group);
+    });
+    groups.forEach(function(group){panel.appendChild(group);});
+    if(groups[0]) groups[0].open=true;
+
+    if(groups.length){
+      var note=doc.createElement('p');
+      note.className='res-sort-note';
+      note.textContent='Agrupadas por tipo y ordenadas cronológicamente dentro de cada sección.';
+      panel.insertBefore(note,groups[0]);
+    }
+  }
+
+  function patch(){
+    try{
+      var doc=frame.contentDocument;
+      if(!doc) return;
+      injectStyles(doc);
+      patchPdfLinks(doc);
+      groupReservations(doc);
+      frame.classList.add('ready');
+      if(boot) boot.remove();
+    }catch(err){
+      frame.classList.add('ready');
+      if(boot) boot.textContent='No se pudo cargar la bitácora.';
+      console.error(err);
+    }
+  }
+
+  frame.addEventListener('load',patch);
+})();
 </script>
 </body>
 </html>
