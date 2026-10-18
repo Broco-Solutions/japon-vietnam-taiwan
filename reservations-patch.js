@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-var frame=document.getElementById('site');
+var frame=window.__tripFrame||document.getElementById('site');
 if(!frame)return;
 var NARITA_FOLDER='https://drive.google.com/drive/folders/1OpsMnJ0hkVuz3wIvxpR0n-J-FMXg4CJd';
 var TYPES={

@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-var frame=document.getElementById('site'),boot=document.getElementById('boot');
+var frame=window.__tripFrame||document.getElementById('site'),boot=document.getElementById('boot');
 var FLIGHT_PDF='https://drive.google.com/file/d/1CxbJIkYF9iUSpdSvRF-lIib_DkuDsZX5/view?usp=drivesdk';
 var PDF_LINKS=[
  {match:'Perth → Hanoi',url:'https://drive.google.com/file/d/1NKUVLbh5ionuN_2KO-xt08KpgIQ22xRJ/view?usp=sharing'},

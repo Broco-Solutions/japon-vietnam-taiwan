@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-var frame=document.getElementById('site');if(!frame)return;
+var frame=window.__tripFrame||document.getElementById('site');if(!frame)return;
 function esc(x){return String(x===null||x===undefined?'':x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 function fmt(n,unit){return (unit||'AUD')+' '+Math.round(Number(n)||0).toLocaleString('es-AR');}
 function styles(doc){
@@ -45,6 +45,14 @@ function styles(doc){
   '.money-hide{display:block;margin:18px auto 4px;background:transparent;color:var(--text-muted);border:1px solid var(--paper-line);border-radius:12px;padding:9px 14px;font:600 12px Inter,sans-serif;cursor:pointer}',
   '@media(max-width:355px){.money-figure__num.small{font-size:17px}.money-line{flex-direction:column}.money-line__amount{text-align:left}}'
  ].join('\n');
+ s.textContent += [
+ '.money-figure__original{display:block;margin-top:4px;color:var(--text-muted);font:600 11px Inter,system-ui,sans-serif}',
+ '.money-line__amount{display:flex;flex-direction:column;align-items:flex-end;gap:3px;min-width:110px}',
+ '.money-line__amount strong{font:700 13.5px Inter,system-ui,sans-serif;color:var(--ink);white-space:nowrap}',
+ '.money-line__amount span{display:block;color:var(--text-muted);font:500 10.5px Inter,system-ui,sans-serif;white-space:nowrap}',
+ '.money-foot strong{color:var(--text)}',
+ '@media(max-width:355px){.money-line__amount{align-items:flex-start}}'
+ ].join('\n');
  doc.head.appendChild(s);
 }
 function locked(doc){
@@ -63,23 +71,38 @@ function locked(doc){
    .finally(function(){if(button.isConnected){button.disabled=false;button.textContent='Ver finanzas →';}});
  });
 }
-function line(label,note,amount,flag){
- return '<div class="money-line"><div class="money-line__copy"><strong>'+(flag?'<span class="money-flag">'+esc(flag)+'</span>':'')+esc(label)+'</strong>'+(note?'<small>'+esc(note)+'</small>':'')+'</div><span class="money-line__amount">'+esc(amount)+'</span></div>';
+function usdFromAud(aud,rate){return Number(aud)*rate;}
+function fmtUSDFromAUD(aud,rate){
+ return 'USD '+Math.round(usdFromAud(aud,rate)).toLocaleString('es-AR');
+}
+function fmtAUD(aud){return 'AUD '+Math.round(Number(aud)||0).toLocaleString('es-AR');}
+function moneyLine(label,note,usdText,originalText,flag){
+ return '<div class="money-line"><div class="money-line__copy"><strong>'+(flag?'<span class="money-flag">'+esc(flag)+'</span>':'')+esc(label)+'</strong>'+(note?'<small>'+esc(note)+'</small>':'')+'</div><div class="money-line__amount"><strong>'+esc(usdText)+'</strong>'+(originalText?'<span>'+esc(originalText)+'</span>':'')+'</div></div>';
 }
 function unlocked(doc,d){
  var p=doc.getElementById('panel-dinero');if(!p)return;
- var total=Number(d.summary.total)||0,paid=Number(d.summary.paid)||0,due=Number(d.summary.pending)||0,pct=total?Math.min(100,Math.max(0,paid/total*100)):0;
- var html='<div class="money-hero"><span class="money-eyebrow">Planificación del viaje · AUD</span><h2>El dinero, claro.</h2><p>Montos orientativos del Excel, con lo abonado, lo pendiente y qué efectivo conviene preparar.</p></div>';
- html+='<div class="money-figures"><div class="money-figure"><span class="money-figure__label">Total de reservas registradas · aprox.</span><strong class="money-figure__num">'+esc(fmt(total))+'</strong><span class="money-figure__note">No es el total definitivo del viaje</span></div>';
- html+='<div class="money-figure"><span class="money-figure__label">✓ Ya abonado</span><strong class="money-figure__num small">'+esc(fmt(paid))+'</strong></div>';
- html+='<div class="money-figure"><span class="money-figure__label">⏳ Pendiente estimado</span><strong class="money-figure__num small">'+esc(fmt(due))+'</strong></div></div>';
+ var f=d.fx||{},rate=Number(f.audToUsd),asOf=f.asOf||'';
+ if(!Number.isFinite(rate)||rate<=0){locked(doc);var failure=p.querySelector('#money-error');if(failure)failure.textContent='No hay una cotización de referencia disponible.';return;}
+ var total=Number(d.summary.total)||0,paid=Number(d.summary.paid)||0,due=Number(d.summary.pending)||0;
+ var pct=total?Math.min(100,Math.max(0,paid/total*100)):0;
+ function metric(label,amount,first){
+   return '<div class="money-figure"><span class="money-figure__label">'+esc(label)+'</span><strong class="money-figure__num'+(first?'':' small')+'">'+esc(fmtUSDFromAUD(amount,rate))+'</strong><span class="money-figure__original">'+esc(fmtAUD(amount))+'</span>'+(first?'<span class="money-figure__note">Estimación parcial, no incluye todos los vuelos y consumos</span>':'')+'</div>';
+ }
+ var html='<div class="money-hero"><span class="money-eyebrow">Resumen privado · USD</span><h2>El dinero, claro.</h2><p>Todo expresado primero en dólares estadounidenses, con moneda original debajo. Valores orientativos del Excel.</p></div>';
+ html+='<div class="money-figures">'+metric('Total de reservas registradas · aprox.',total,true)+metric('✓ Ya abonado',paid,false)+metric('⏳ Pendiente estimado',due,false)+'</div>';
  html+='<div class="money-bar" role="img" aria-label="'+Math.round(pct)+' por ciento abonado"><span style="width:'+pct.toFixed(1)+'%"></span></div>';
  html+='<div class="money-notice"><strong>Alcance de este total</strong>'+esc(d.scope)+'</div>';
- html+='<h3 class="money-title">Pendientes por aclarar</h3><div class="money-list">'+(d.pending||[]).map(function(x){return line(x.label,x.note,fmt(x.aud));}).join('')+'</div>';
- html+='<h3 class="money-title">Efectivo que hay que prever</h3><div class="money-list">'+(d.cashMust||[]).map(function(x){return line(x.kind,x.note,x.amount);}).join('')+'</div>';
- html+='<h3 class="money-title">Plan de efectivo por país</h3><div class="money-list">'+(d.cashPlan||[]).map(function(x){return line(x.country,x.note,x.currency+' '+Math.round(x.total).toLocaleString('es-AR'),x.flag);}).join('')+'</div>';
- html+='<div class="money-notice"><strong>No duplicar importes</strong>El plan de efectivo incluye gastos cotidianos y algunas reservas ya contabilizadas. No se suma al total general.</div>';
- html+='<div class="money-foot">'+esc(d.source)+'<br>Los importes reales pueden cambiar. Revisar reservas y condiciones antes de sacar efectivo.</div><button class="money-hide" type="button" id="money-relock">🔒 Ocultar importes</button>';
+ html+='<h3 class="money-title">Pendientes por aclarar</h3><div class="money-list">'+(d.pending||[]).map(function(x){return moneyLine(x.label,x.note,fmtUSDFromAUD(x.aud,rate),fmtAUD(x.aud));}).join('')+'</div>';
+ html+='<h3 class="money-title">Efectivo obligatorio o por confirmar</h3><div class="money-list">'+(d.cashMust||[]).map(function(x){
+  var amount=Number(x.aud),hasValue=x.aud!==null&&x.aud!==undefined&&Number.isFinite(amount);
+  return moneyLine(x.kind,x.note,hasValue?fmtUSDFromAUD(amount,rate):'Sin importe confirmado',hasValue?x.amount:'',null);
+ }).join('')+'</div>';
+ html+='<h3 class="money-title">Previsión de efectivo por país</h3><div class="money-list">'+(d.cashPlan||[]).map(function(x){
+   return moneyLine(x.country,x.note,fmtUSDFromAUD(x.aud,rate),x.currency+' '+Math.round(x.total).toLocaleString('es-AR'),x.flag);
+ }).join('')+'</div>';
+ html+='<div class="money-notice"><strong>No duplicar montos</strong>La previsión de efectivo incluye estimaciones de gastos cotidianos y algunas reservas ya contempladas. No se suma al total de reservas. El saldo del Ha Giang Loop sigue sin confirmar.</div>';
+ html+='<div class="money-foot"><strong>Conversión de referencia</strong>: 1 AUD = '+rate.toLocaleString('es-AR',{minimumFractionDigits:4,maximumFractionDigits:5})+' USD · '+esc(asOf)+'. No es una cotización garantizada y puede variar.<div style="margin-top:5px">'+esc(d.source)+'</div></div>';
+ html+='<button class="money-hide" type="button" id="money-relock">🔒 Ocultar importes</button>';
  p.innerHTML=html;
  p.querySelector('#money-relock').addEventListener('click',function(){locked(doc);});
 }
@@ -102,7 +125,7 @@ function init(){
   if(panel.querySelector('.money-pin'))panel.querySelector('.money-pin').focus({preventScroll:true});
  });
  doc.querySelectorAll('nav.tabs .tab-btn:not(#tab-dinero)').forEach(function(btn){
-   btn.addEventListener('click',function(){panel.classList.remove('active');panel.hidden=true;b.classList.remove('active');b.setAttribute('aria-selected','false');b.setAttribute('tabindex','-1');});
+   btn.addEventListener('click',function(){if(!panel.hidden)locked(doc);panel.classList.remove('active');panel.hidden=true;b.classList.remove('active');b.setAttribute('aria-selected','false');b.setAttribute('tabindex','-1');});
  });
 }
 frame.addEventListener('load',function(){frame.contentWindow.setTimeout(init,100);});

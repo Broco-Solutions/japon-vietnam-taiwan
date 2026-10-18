@@ -44,7 +44,7 @@
 
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
-  html{ scroll-behavior:smooth; }
+  html{ scroll-behavior:auto; }
   body{
     background:var(--paper);
     color:var(--text);
@@ -68,7 +68,7 @@
     padding: 22px 20px 18px;
     position:sticky; top:0; z-index:20;
     border-bottom:1px solid var(--ink-line);
-    transition:padding .22s ease, box-shadow .22s ease;
+    transition:box-shadow .14s ease;
   }
   .top__flags{ display:flex; align-items:center; gap:5px; margin-bottom:8px; }
   .flag-icon{ display:block; flex:none; border-radius:2px; }
@@ -98,7 +98,7 @@
   /* ---------- TABS ---------- */
   nav.tabs{
     position:fixed; left:0; right:0; bottom:0; z-index:30;
-    background:rgba(16,24,32,0.88); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    background:rgba(16,24,32,0.97);
     border-top:1px solid var(--ink-line);
     padding: 8px max(12px, env(safe-area-inset-left)) calc(8px + env(safe-area-inset-bottom));
   }
@@ -173,7 +173,7 @@
   .day-card{
     background:#fff; border-radius:var(--radius-lg); margin-bottom:10px;
     box-shadow:var(--shadow-card); overflow:hidden; border-left:4px solid var(--jade);
-    scroll-margin-top:112px; content-visibility:auto; contain-intrinsic-size:96px;
+    scroll-margin-top:112px;
     transition:transform .2s ease, box-shadow .2s ease;
   }
   .day-card[data-leg="TW"]{ border-left-color:var(--gold-fill); }
@@ -3068,16 +3068,25 @@
   }
 
   function setupCompactHeader(){
-    var header = document.querySelector('header.top');
-    var cover = document.querySelector('.cover');
-    var ticking = false;
+    var header=document.querySelector('header.top');
+    var cover=document.querySelector('.cover');
+    if(!header)return;
+    var pending=false;
+    var compact=false;
+    var topLimit=Math.max(85,(cover?cover.offsetHeight:140)+28);
+    var bottomLimit=Math.max(36,topLimit-65);
     function update(){
-      header.classList.toggle('is-compact', window.scrollY >= ((cover ? cover.offsetHeight : 0) - 2));
-      ticking = false;
+      var y=window.scrollY||0;
+      var next=compact?(y>bottomLimit):(y>topLimit);
+      if(next!==compact){
+        compact=next;
+        header.classList.toggle('is-compact',compact);
+      }
+      pending=false;
     }
-    window.addEventListener('scroll', function(){
-      if(!ticking){ requestAnimationFrame(update); ticking = true; }
-    }, {passive:true});
+    window.addEventListener('scroll',function(){
+      if(!pending){pending=true;requestAnimationFrame(update);}
+    },{passive:true});
     update();
   }
 

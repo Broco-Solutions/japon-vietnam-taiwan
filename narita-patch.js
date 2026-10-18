@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-var frame=document.getElementById('site');
+var frame=window.__tripFrame||document.getElementById('site');
 if(!frame)return;
 var PDF='https://drive.google.com/file/d/19nD15tCCOzjwo2Op9Lm3LfLla_rqadjY/view?usp=drivesdk';
 var MAPS='https://www.google.com/maps/search/?api=1&query=Richmond%20Hotel%20Narita%2C%20Hanasaki-cho%20970%2C%20Narita%2C%20Chiba%2C%20Japan&hl=es&gl=es';
