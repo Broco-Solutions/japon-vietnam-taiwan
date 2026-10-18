@@ -51,7 +51,7 @@ function sanitizeData(doc){
    }
  });
  (data.days||[]).forEach(function(d){
-   if(d.num===30)d.activity='Papá, mamá y Renzo salen de Narita a las 18:45 en AC6 hacia Montreal (llegada 17:00). Conexión AC96: Montreal 20:55 → São Paulo 09:00 del 9 Dic. Último tramo AC90: São Paulo 12:15 → Buenos Aires Ezeiza 15:05 del 9 Dic. Álvaro + Mili continúan su viaje hacia Nueva Zelanda el 9 Dic desde Narita.';
+   if(d.num===30)d.activity='Papá, mamá y Renzo salen de Narita a las 18:45 en AC6 hacia Montreal (llegada 17:00). Conexión AC96: Montreal 20:55 → São Paulo 09:00 del 9 Dic. Último tramo AC90: São Paulo 12:15 → Buenos Aires Ezeiza 15:05 del 9 Dic. Álvaro + Mili cierran el recorrido por Japón el 8 Dic. Su vuelo a Nueva Zelanda está programado para el 9 Dic desde Narita (FJ451 + FJ350 vía Nadi), tal como figura en el Excel.';
  });
  n.textContent=JSON.stringify(data);
  try{doc.defaultView.DATA=data;}catch(e){}
