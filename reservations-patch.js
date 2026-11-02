@@ -5,12 +5,13 @@ if(!frame)return;
 var NARITA_FOLDER='https://drive.google.com/drive/folders/1OpsMnJ0hkVuz3wIvxpR0n-J-FMXg4CJd';
 var TYPES={
  'Vuelos':{icon:'✈️',label:'Vuelos',short:'Vuelos'},
+ 'Traslados':{icon:'🚐',label:'Traslados',short:'Traslado'},
  'Alojamiento':{icon:'🛏️',label:'Alojamientos',short:'Alojamiento'},
  'Tours y excursiones':{icon:'🧭',label:'Tours',short:'Tour / excursión'},
  'Restaurantes':{icon:'🍜',label:'Restaurantes',short:'Restaurante'},
  'Otros':{icon:'🎟️',label:'Otros',short:'Otro'}
 };
-var TYPE_ORDER=['Vuelos','Alojamiento','Tours y excursiones','Restaurantes','Otros'];
+var TYPE_ORDER=['Vuelos','Traslados','Alojamiento','Tours y excursiones','Restaurantes','Otros'];
 function style(doc){
  if(doc.getElementById('reservation-timeline-style'))return;
  var s=doc.createElement('style');s.id='reservation-timeline-style';
@@ -96,7 +97,7 @@ function build(doc){
  records.forEach(function(r){var info=r.manual?{key:new Date(2026,10,9).getTime(),date:new Date(2026,10,9),label:'9–10 Nov'}:dateInfo(r.card.textContent||'');r.info=info;addMeta(doc,r,info);});
  records.sort(function(a,b){if(a.info.key!==b.info.key)return a.info.key-b.info.key;return TYPE_ORDER.indexOf(a.type)-TYPE_ORDER.indexOf(b.type);});
  panel.innerHTML='';panel.dataset.timelineBuilt='1';panel.classList.add('res-timeline');
- var intro=doc.createElement('div');intro.className='res-timeline-intro';intro.innerHTML='<h2>Reservas por fecha</h2><p>Ordenadas como sucede el viaje. Usá los filtros para ver solo vuelos, alojamientos, tours o restaurantes.</p>';panel.appendChild(intro);
+ var intro=doc.createElement('div');intro.className='res-timeline-intro';intro.innerHTML='<h2>Reservas por fecha</h2><p>Ordenadas como sucede el viaje. Usá los filtros para ver vuelos, traslados, alojamientos, tours o restaurantes.</p>';panel.appendChild(intro);
  var filters=doc.createElement('div');filters.className='res-filter-row';
  var defs=[['ALL','Todos']].concat(TYPE_ORDER.map(function(k){return[k,(TYPES[k].icon+' '+TYPES[k].label)];}));
  defs.forEach(function(def){var b=doc.createElement('button');b.type='button';b.className='res-filter-btn'+(def[0]==='ALL'?' active':'');b.dataset.filter=def[0];b.textContent=def[1];filters.appendChild(b);});panel.appendChild(filters);

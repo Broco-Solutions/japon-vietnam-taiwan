@@ -943,6 +943,24 @@
       "referencia": "Reservas confirmadas el 13 Oct de 2026 (4 entradas + 1 entrada). Accesos disponibles desde la app oficial.",
       "notas": "Llevar la app Tokyo Disney Resort instalada e iniciada sesión con las entradas listas para acceder. Si no carga, usar los accesos originales recibidos por email. Entradas para los cinco.",
       "pdf": null
+    },
+    {
+      "num": 27,
+      "desc": "Traslado Vantravel · Rosario → Aeroparque\nServicio compartido · Dani, Vero y Renzo (3 adultos)",
+      "proveedor": "Vantravel S.R.L.",
+      "fechas": "Sáb 7 Nov 2026 · vuelo AC9845 desde Aeroparque a las 13:35",
+      "referencia": "Reserva confirmada · 3 pasajeros",
+      "notas": "Recogida en Rosario. Vantravel informará por teléfono el horario exacto de salida el día hábil anterior al vuelo (lunes a viernes 17:00–20:00; sábados 10:00–13:00). No confundirlo con la hora del vuelo. Equipaje: un bulto de hasta 32 kg y un bolso de mano por persona; avisar 48 h antes si hay extras. Contacto: oficina 0341 4298600, guardia 0341 15-3040209.",
+      "pdf": "vantravel_ida"
+    },
+    {
+      "num": 28,
+      "desc": "Traslado Vantravel · Ezeiza → Rosario\nServicio compartido · Dani, Vero y Renzo (3 adultos)",
+      "proveedor": "Vantravel S.R.L.",
+      "fechas": "Mié 9 Dic 2026 · llegada del vuelo AC90 a Ezeiza a las 15:05",
+      "referencia": "Reserva confirmada · 3 pasajeros",
+      "notas": "Al llegar a Ezeiza, buscar al chofer de Vantravel en el hall de arribos, con cartel VANTRAVEL ROSARIO. El servicio compartido puede implicar hasta 3 horas de espera antes del regreso a Rosario. Contacto: oficina 0341 4298600, guardia 0341 15-3040209.",
+      "pdf": "vantravel_vuelta"
     }
   ],
   "horarios": [
@@ -2526,7 +2544,9 @@
     danang_taipei_osaka: "Ticket Da Nang → Taipei → Osaka",
     narita_christchurch: "Ticket Narita → Christchurch",
     ba_tokyo: "Ticket Buenos Aires ⇄ Tokyo",
-    restaurante_tam_vi: "Reserva Tầm Vị"
+    restaurante_tam_vi: "Reserva Tầm Vị",
+    vantravel_ida: "Voucher Vantravel · ida",
+    vantravel_vuelta: "Voucher Vantravel · regreso"
   };
 
   var PDF_URLS={
@@ -2536,7 +2556,9 @@
     danang_taipei_osaka:'https://drive.google.com/file/d/1kC8V2_taDyDbymZs7UgcHstWifJdIfkH/view',
     narita_christchurch:'https://drive.google.com/file/d/114hX3KXnVZ3X6RVZ-6EtL1lZiOT0lHlh/view',
     ba_tokyo:'https://drive.google.com/file/d/1CxbJIkYF9iUSpdSvRF-lIib_DkuDsZX5/view',
-    restaurante_tam_vi:'https://drive.google.com/file/d/16oDmT-qAbgConRoP885jK4hGsZ0VHr-R/view'
+    restaurante_tam_vi:'https://drive.google.com/file/d/16oDmT-qAbgConRoP885jK4hGsZ0VHr-R/view',
+    vantravel_ida:'https://drive.google.com/file/d/1HXRYOAY0XUZD34eA6MFqh4__FSTX0zGT/view?usp=drivesdk',
+    vantravel_vuelta:'https://drive.google.com/file/d/1xlhSsGv1nBH6oBKbUOupQK2mpjWZXS_u/view?usp=drivesdk'
   };
   function pdfChip(key,labelOverride){
     var href=PDF_URLS[key];if(!href)return '';
@@ -2838,6 +2860,7 @@
   /* ============ RESERVAS ============ */
   function categorize(desc){
     var d = desc.toLowerCase();
+    if(d.indexOf('traslado') !== -1 || d.indexOf('vantravel') !== -1) return 'Traslados';
     if(d.indexOf('vuelo') !== -1) return 'Vuelos';
     if(d.indexOf('alojamiento') !== -1 || d.indexOf('depto') !== -1) return 'Alojamiento';
     if(d.indexOf('cena') !== -1 || d.indexOf('restaurante') !== -1 || d.indexOf('almuerzo') !== -1) return 'Restaurantes';
@@ -2847,7 +2870,7 @@
 
   function renderReservas(){
     var el=document.getElementById('panel-reservas'),html='';
-    var cats={'Vuelos':[],'Alojamiento':[],'Restaurantes':[],'Tours y excursiones':[],'Otros':[]};
+    var cats={'Vuelos':[],'Traslados':[],'Alojamiento':[],'Restaurantes':[],'Tours y excursiones':[],'Otros':[]};
     DATA.reservas.forEach(function(r){cats[categorize(r.desc)].push(r);});
     Object.keys(cats).forEach(function(cat){
       if(!cats[cat].length)return;

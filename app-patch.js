@@ -13,12 +13,13 @@ var PDF_LINKS=[
 ];
 var GROUP_META={
  'Vuelos':{icon:'✈️',hint:'Pasajes, conexiones y comprobantes'},
+ 'Traslados':{icon:'🚐',hint:'Traslados terrestres y vouchers'},
  'Alojamiento':{icon:'🛏️',hint:'Hoteles y departamentos'},
  'Tours y excursiones':{icon:'🧭',hint:'Actividades y experiencias reservadas'},
  'Restaurantes':{icon:'🍜',hint:'Mesas y experiencias gastronómicas'},
  'Otros':{icon:'🎟️',hint:'Otras reservas del viaje'}
 };
-var GROUP_ORDER=['Vuelos','Alojamiento','Tours y excursiones','Restaurantes','Otros'];
+var GROUP_ORDER=['Vuelos','Traslados','Alojamiento','Tours y excursiones','Restaurantes','Otros'];
 var MONEY_RE=/(?:\bAUD\b|\bUSD\b|\bARS\b|\bTWD\b|\bJPY\b|[€¥$]|\bmonto\b|\bpagad\w*\b|\bpago\b|\bprepaga\w*\b|\bsaldo\b|\befectivo\b|\bpropina\b|\bcosto\b|\bprecio\b|\breembols\w*\b|\bcobrad\w*\b|\bdepósito\b|\btarjeta de crédito\b|\bgasto\b|\bdinero\b)/i;
 
 function cleanMoneyText(text){
