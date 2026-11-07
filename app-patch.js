@@ -88,7 +88,29 @@ function climateRow(name,min,max){
  var left=Math.max(0,Math.min(100,min/30*100)),width=Math.max(6,Math.min(100-left,(max-min)/30*100));
  return '<div class="climate-row"><div class="climate-name">'+name+'</div><div class="climate-track"><span class="climate-range" style="left:'+left.toFixed(1)+'%;width:'+width.toFixed(1)+'%"></span></div><div class="climate-temp">'+min+'–'+max+'°</div></div>';
 }
-function rebuildPrepare(doc){
+
+function etaEscape(value){
+ return String(value==null?'':value).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});
+}
+function renderCanadaEtas(data){
+ var eta=data&&data.documentacion&&data.documentacion.etaCanada;
+ if(!eta||!Array.isArray(eta.viajeros)||!eta.viajeros.length)return '';
+ var approved=eta.viajeros.filter(function(v){return v.estado==='aprobada';}).length;
+ var cards=eta.viajeros.map(function(v){
+   var valid=v.estado==='aprobada';
+   var name=etaEscape(v.nombre)+(v.nombreCompleto?' · '+etaEscape(v.nombreCompleto):'');
+   var summary=valid?'Aprobada el '+etaEscape(v.aprobada)+' · vence '+etaEscape(v.vence)+'.':'No se adjuntó todavía el comprobante de este viajero. Su estado de solicitud no está confirmado en la bitácora.';
+   var url=valid&&typeof v.pdf==='string'&&/^https:\/\/drive\.google\.com\//.test(v.pdf)?v.pdf:'';
+   var pdfLink=url?' <a href="'+etaEscape(url)+'" target="_blank" rel="noopener noreferrer">Ver aprobación PDF</a>':'';
+   return '<div class="prep-old__alert '+(valid?'is-resolved':'amber')+'"><span class="prep-old__label">'+(valid?'Aprobada':'Sin comprobante')+'</span><strong>'+name+'</strong><p>'+summary+pdfLink+'</p></div>';
+ }).join('');
+ var folder=typeof eta.carpeta==='string'&&/^https:\/\/drive\.google\.com\//.test(eta.carpeta)?'<a href="'+etaEscape(eta.carpeta)+'" target="_blank" rel="noopener noreferrer">Ver carpeta de eTA en Drive</a>':'';
+ return '<h3>Canadá · autorizaciones eTA</h3>'+
+ '<div class="prep-old__alerts">'+cards+'</div>'+
+ '<div class="prep-old__guide"><strong>'+approved+' de '+eta.viajeros.length+' comprobantes aprobados cargados.</strong> Las eTA están vinculadas al pasaporte usado en la solicitud: viajar con ese mismo documento. '+folder+'</div>';
+}
+
+function rebuildPrepare(doc,data){
  var p=doc.getElementById('panel-preparar');if(!p)return;
  p.innerHTML='<div class="prep-old">'+
  '<div class="prep-old__hero"><div class="prep-old__kicker">Resumen para salir tranquilos</div><h2>33 días, 3 países,<br>4 climas</h2><p>Una vista práctica de lo que todavía puede trabar el viaje, qué llevar y qué conviene resolver primero.</p></div>'+
@@ -98,6 +120,7 @@ function rebuildPrepare(doc){
  '<div class="prep-old__alert"><span class="prep-old__label">Crítico</span><strong>El equipaje tiene un tramo muy restrictivo</strong><p>CI790 permite 7 kg y D7378 solo 5 kg de cabina. Para una ruta que va de clima tropical a montaña y fin de otoño japonés, conviene definir desde ahora cómo repartir el equipaje entre los cinco.</p></div>'+
  '<div class="prep-old__alert amber"><span class="prep-old__label">Hueco real</span><strong>Tokyo 9–10 Nov, tres viajeros</strong><p>Air Canada llega a Narita el 9 Nov a las 16:30 y VJ933 sale a Hanoi el 10 Nov a las 09:30 para papá, mamá y Renzo. Hace falta una noche de tránsito con acceso simple a Narita y margen cómodo para volver al aeropuerto.</p></div>'+
  '</div>'+
+ renderCanadaEtas(data)+
  '<h3>Antes de salir</h3><div class="prep-old__quick">'+
  '<div class="prep-old__quick-card"><span>🛂</span><strong>Documentos offline</strong><p>Pasaportes, visas, vuelos, reservas y direcciones clave descargadas en los teléfonos.</p></div>'+
  '<div class="prep-old__quick-card"><span>📶</span><strong>Conectividad lista</strong><p>eSIM/SIM, roaming de respaldo y mapas offline para los días de llegada.</p></div>'+
@@ -161,7 +184,7 @@ function patch(){
    var data=sanitizeData(doc);
    injectStyles(doc);
    removeMoneyUi(doc);
-   rebuildPrepare(doc);
+   rebuildPrepare(doc,data);
    patchPdfLinks(doc);
    groupReservations(doc);
    patchFlightCard(doc);
