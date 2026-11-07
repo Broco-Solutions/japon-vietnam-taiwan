@@ -66,7 +66,7 @@ function collect(panel){
 }
 function makeNarita(doc){
  var card=doc.createElement('article');card.className='res-card res-card--narita';
- card.innerHTML='<div class="res-card__title">Alojamiento en Narita · mamá, papá y Renzo</div><div class="res-card__sub">9 Nov → 10 Nov · 1 noche · conexión en NRT</div><p class="res-narita-note">Llegada a Narita el 9 Nov a las 16:30. VJ933 sale de NRT a Hanoi el 10 Nov a las 09:30. La reserva está guardada en la carpeta Narita del Drive.</p><a class="res-narita-link" href="'+NARITA_FOLDER+'" target="_blank" rel="noopener noreferrer">📁 Abrir carpeta Narita</a>';
+ card.innerHTML='<div class="res-card__title">Alojamiento en Narita · mamá, papá y Renzo</div><div class="res-card__sub">9 Nov → 10 Nov · 1 noche · conexión en NRT</div><p class="res-narita-note">Llegada a Narita el 9 Nov a las 18:20 con QR806 desde Doha. VJ933 sale de NRT a Hanoi el 10 Nov a las 09:30. La reserva está guardada en la carpeta Narita del Drive.</p><a class="res-narita-link" href="'+NARITA_FOLDER+'" target="_blank" rel="noopener noreferrer">📁 Abrir carpeta Narita</a>';
  return {card:card,type:'Alojamiento',manual:true};
 }
 function addMeta(doc,rec,info){
@@ -84,7 +84,7 @@ function updatePrepare(doc){
    a.classList.add('is-resolved');
    var label=a.querySelector('.prep-old__label');if(label)label.textContent='Resuelto';
    var strong=a.querySelector('strong');if(strong)strong.textContent='Narita 9–10 Nov, tres viajeros';
-   var p=a.querySelector('p');if(p)p.innerHTML='Mamá, papá y Renzo ya tienen alojamiento para la noche de tránsito. Llegan a NRT el 9 Nov a las 16:30 y VJ933 sale el 10 Nov a las 09:30. <a href="'+NARITA_FOLDER+'" target="_blank" rel="noopener">Abrir carpeta Narita</a>.';
+   var p=a.querySelector('p');if(p)p.innerHTML='Mamá, papá y Renzo ya tienen alojamiento para la noche de tránsito. Llegan a NRT el 9 Nov a las 18:20 en QR806 y VJ933 sale el 10 Nov a las 09:30. <a href="'+NARITA_FOLDER+'" target="_blank" rel="noopener">Abrir carpeta Narita</a>.';
  });
 }
 function build(doc){

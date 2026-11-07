@@ -1,7 +1,7 @@
 (function(){
 'use strict';
 var frame=window.__tripFrame||document.getElementById('site'),boot=document.getElementById('boot');
-var FLIGHT_PDF='https://drive.google.com/file/d/1CxbJIkYF9iUSpdSvRF-lIib_DkuDsZX5/view?usp=drivesdk';
+var FLIGHT_PDF='https://drive.google.com/drive/folders/1m_rR3PiCc11BA3iP5pZBmH8HnC3FosTh';
 var PDF_LINKS=[
  {match:'Perth → Hanoi',url:'https://drive.google.com/file/d/1NKUVLbh5ionuN_2KO-xt08KpgIQ22xRJ/view?usp=sharing'},
  {match:'Tokyo → Hanoi',url:'https://drive.google.com/file/d/1epa4TfSMFw4SnvViT5SvbL_CLl4Vz0HR/view?usp=sharing'},
@@ -46,9 +46,9 @@ function sanitizeData(doc){
    delete r.montoTotal;delete r.pagado;delete r.saldoPendiente;delete r.moneda;delete r.local;delete r.aud;
    if(r.notas)r.notas=cleanMoneyText(r.notas);
    if(r.num===24||r.pdf==='ba_tokyo'){
-     r.fechas='Ida: sáb 7 Nov → llegada a Tokyo lun 9 Nov · Vuelta: mar 8 Dic → llegada a Buenos Aires mié 9 Dic';
-     r.referencia='Airline reference: A9A9AF · AC9845 + AC97 + AC5 / AC6 + AC96 + AC90';
-     r.notas='Ida: 7 Nov · AEP 13:35 → GRU 16:20 (AC9845, GOL) · GRU 21:45 → YUL 06:10 del 8 Nov (AC97) · YUL 12:40 → NRT 16:30 del 9 Nov (AC5). Vuelta: 8 Dic · NRT 18:45 → YUL 17:00 (AC6) · YUL 20:55 → GRU 09:00 del 9 Dic (AC96) · GRU 12:15 → EZE 15:05 del 9 Dic (AC90).';
+     r.fechas='Ida: sáb 7 Nov 18:15 AEP → Narita lun 9 Nov 18:20 (vía GRU y DOH) · Vuelta: 8 Dic NRT → 9 Dic EZE (sin cambios)';
+     r.referencia='Localizador Air Canada: A9A9AF · G37685 + QR774 + QR806 / AC6 + AC96 + AC90';
+     r.notas='Ida: sáb 7 Nov · AEP 18:15 → GRU 21:10 (G37685, GOL) · GRU 02:10 del 8 Nov → DOH 21:55 (QR774, Qatar Airways) · DOH 02:15 del 9 Nov → NRT 18:20 (QR806, Qatar Airways). Vuelta sin cambios: 8 Dic · NRT 18:45 → YUL 17:00 (AC6) · YUL 20:55 → GRU 09:00 del 9 Dic (AC96) · GRU 12:15 → EZE 15:05 del 9 Dic (AC90). El pasaje nuevo del 07/11 reemplaza a la ruta de ida por Montreal; los tres PDF vigentes están en la carpeta de Drive. Visit Japan Web debe reflejar QR806 y llegada 18:20 desde Doha.';
    }
  });
  (data.days||[]).forEach(function(d){
@@ -118,9 +118,10 @@ function rebuildPrepare(doc,data){
  '<h3>Primero, resolver esto</h3><div class="prep-old__alerts">'+
  '<div class="prep-old__alert"><span class="prep-old__label">Crítico</span><strong>Visas de Vietnam y Taiwán</strong><p>Con pasaporte argentino, Vietnam admite solicitud de e‑Visa y Argentina no figura en la lista de exención de visa de Taiwán. Revisar requisitos vigentes y tramitar con anticipación en los sitios oficiales. <a href="https://evisa.gov.vn/" target="_blank" rel="noopener">Vietnam</a> · <a href="https://www.boca.gov.tw/fp-158-250-a5a40-2.html" target="_blank" rel="noopener">Taiwán</a></p></div>'+
  '<div class="prep-old__alert"><span class="prep-old__label">Crítico</span><strong>El equipaje tiene un tramo muy restrictivo</strong><p>CI790 permite 7 kg y D7378 solo 5 kg de cabina. Para una ruta que va de clima tropical a montaña y fin de otoño japonés, conviene definir desde ahora cómo repartir el equipaje entre los cinco.</p></div>'+
- '<div class="prep-old__alert amber"><span class="prep-old__label">Hueco real</span><strong>Tokyo 9–10 Nov, tres viajeros</strong><p>Air Canada llega a Narita el 9 Nov a las 16:30 y VJ933 sale a Hanoi el 10 Nov a las 09:30 para papá, mamá y Renzo. Hace falta una noche de tránsito con acceso simple a Narita y margen cómodo para volver al aeropuerto.</p></div>'+
+ '<div class="prep-old__alert amber"><span class="prep-old__label">Hueco real</span><strong>Tokyo 9–10 Nov, tres viajeros</strong><p>QR806 de Qatar Airways llega a Narita el 9 Nov a las 18:20 y VJ933 sale a Hanoi el 10 Nov a las 09:30 para papá, mamá y Renzo. Hace falta una noche de tránsito con acceso simple a Narita y margen cómodo para volver al aeropuerto.</p></div>'+
  '</div>'+
  renderCanadaEtas(data)+
+ '<div class="prep-old__alert amber"><span class="prep-old__label">Acción necesaria</span><strong>Visit Japan Web: vuelo reemitido</strong><p>Dani, Vero y Renzo llegan a Narita el 9 Nov a las 18:20 con QR806 (Qatar Airways, desde Doha). Actualizar la primera entrada: ya no es AC5 desde Montreal a las 16:30. Revisar nuevamente los QR de Migraciones y Aduana.</p></div>'+ 
  '<h3>Antes de salir</h3><div class="prep-old__quick">'+
  '<div class="prep-old__quick-card"><span>🛂</span><strong>Documentos offline</strong><p>Pasaportes, visas, vuelos, reservas y direcciones clave descargadas en los teléfonos.</p></div>'+
  '<div class="prep-old__quick-card"><span>📶</span><strong>Conectividad lista</strong><p>eSIM/SIM, roaming de respaldo y mapas offline para los días de llegada.</p></div>'+
@@ -139,7 +140,7 @@ function rebuildPrepare(doc,data){
  '<div class="layer-card"><div class="layer-card__icon">🔋</div><strong>Tecnología mínima</strong><p>Adaptador universal, cargador múltiple, batería externa en cabina y copia offline de todo.</p></div>'+
  '</div>'+
  '<div class="prep-old__guide"><strong>Cómo leer esta guía.</strong> El clima día por día es una expectativa razonable, no un pronóstico. Las recomendaciones están pensadas para evitar sobrecargar la valija y para resolver primero los puntos que pueden bloquear el viaje.</div>'+
- '<h3>Vuelo principal actualizado</h3><div class="prep-old__flight"><b>Ida · 7–9 Nov</b><p>AEP 13:35 → GRU 16:20 · GRU 21:45 → YUL 06:10 (8 Nov) · YUL 12:40 → NRT 16:30 (9 Nov).</p><b>Vuelta · 8–9 Dic</b><p>NRT 18:45 → YUL 17:00 · YUL 20:55 → GRU 09:00 (9 Dic) · GRU 12:15 → EZE 15:05.</p><a href="'+FLIGHT_PDF+'" target="_blank" rel="noopener noreferrer">📄 Ver itinerario actualizado</a></div>'+
+ '<h3>Vuelo principal actualizado</h3><div class="prep-old__flight"><b>Ida ACTUALIZADA · 7–9 Nov</b><p>G37685: AEP 18:15 → GRU 21:10 (7 Nov) · QR774: GRU 02:10 → DOH 21:55 (8 Nov) · QR806: DOH 02:15 → NRT 18:20 (9 Nov).</p><b>Vuelta · 8–9 Dic</b><p>NRT 18:45 → YUL 17:00 · YUL 20:55 → GRU 09:00 (9 Dic) · GRU 12:15 → EZE 15:05.</p><a href="'+FLIGHT_PDF+'" target="_blank" rel="noopener noreferrer">📁 Ver los tres pasajes vigentes</a></div>'+
  '</div>';
 }
 function patchPdfLinks(doc){
@@ -161,7 +162,7 @@ function groupReservations(doc){
  if(groups.length){var note=doc.createElement('p');note.className='res-sort-note';note.textContent='Agrupadas por tipo y ordenadas cronológicamente dentro de cada sección.';panel.insertBefore(note,groups[0]);}
 }
 function patchFlightCard(doc){
- doc.querySelectorAll('.res-card').forEach(function(card){var title=card.querySelector('.res-card__title');if(!title||(title.textContent||'').indexOf('Vuelo Buenos Aires ⇄ Tokyo')<0)return;var sub=card.querySelector('.res-card__sub');if(sub)sub.innerHTML='Air Canada (vía Gotogate)<br><span class="res-card__date-emphasis">Ida: 7 Nov → NRT 9 Nov 16:30 · Vuelta: NRT 8 Dic 18:45 → EZE 9 Dic 15:05</span>';var det=card.querySelector('details.notes p');if(det)det.textContent='Ida: AEP 13:35 → GRU 16:20 (AC9845) · GRU 21:45 → YUL 06:10 del 8 Nov (AC97) · YUL 12:40 → NRT 16:30 del 9 Nov (AC5). Vuelta: NRT 18:45 → YUL 17:00 (AC6) · YUL 20:55 → GRU 09:00 del 9 Dic (AC96) · GRU 12:15 → EZE 15:05 del 9 Dic (AC90).';});
+ doc.querySelectorAll('.res-card').forEach(function(card){var title=card.querySelector('.res-card__title');if(!title||(title.textContent||'').indexOf('Vuelo Buenos Aires ⇄ Tokyo')<0)return;var sub=card.querySelector('.res-card__sub');if(sub)sub.innerHTML='GOL y Qatar Airways (ida) · Air Canada (vuelta)<br><span class="res-card__date-emphasis">Ida: AEP 7 Nov 18:15 → NRT 9 Nov 18:20 · Vuelta sin cambios: NRT 8 Dic 18:45 → EZE 9 Dic 15:05</span>';var det=card.querySelector('details.notes p');if(det)det.textContent='Ida: sáb 7 Nov · AEP 18:15 → GRU 21:10 (G37685, GOL) · GRU 02:10 del 8 Nov → DOH 21:55 (QR774, Qatar Airways) · DOH 02:15 del 9 Nov → NRT 18:20 (QR806, Qatar Airways). Vuelta sin cambios: 8 Dic · NRT 18:45 → YUL 17:00 (AC6) · YUL 20:55 → GRU 09:00 del 9 Dic (AC96) · GRU 12:15 → EZE 15:05 del 9 Dic (AC90). Visit Japan Web: QR806 desde Doha, llegada 18:20.';});
 }
 function patchDates(doc,data){
  var r=doc.getElementById('date-range');if(r)r.textContent='7 Nov – 9 Dic';
