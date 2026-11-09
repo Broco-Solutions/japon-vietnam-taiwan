@@ -3,7 +3,6 @@
   var frame=window.__tripFrame||document.getElementById('site');
   if(!frame)return;
   // Never embed passport scans, passport numbers, or boarding-pass barcodes in the public app.
-  var FLIGHT_FOLDER='https://drive.google.com/drive/folders/19PpYnUfSq86fJe5YWMS6tThPKYHP5_Gv';
   var DOCUMENTS_FOLDER='https://drive.google.com/drive/folders/1YE6vU0Y-_U_xV2fYOksnhsWofM2p462_';
   function styles(doc){
     if(doc.getElementById('trip-document-style'))return;
@@ -17,28 +16,11 @@
       '.trip-doc-card strong{display:block;font-size:13px;margin-bottom:5px}.trip-doc-card p{font-size:11.5px;line-height:1.5;color:var(--text-muted);margin:0}';
     doc.head.appendChild(s);
   }
-  function inReservations(doc){
-    var cards=[].slice.call(doc.querySelectorAll('#panel-reservas .res-card'));
-    var card=cards.find(function(c){
-      var heading=c.querySelector('.res-card__title');
-      return heading&&/vuelo\s+(tokyo|narita)\s*→\s*hanoi/i.test(heading.textContent||'');
-    });
-    if(!card||card.querySelector('.trip-doc-summary'))return;
-    var e=doc.createElement('div');e.className='trip-doc-summary';
-    e.innerHTML='<strong>✓ Check-in VJ933 realizado · 10 nov · 09:30</strong>'+
-      '<div>Grupo 3 · Daniel 26A · Renzo 26B · Verónica 26C · embarque indicado 08:50.</div>'+
-      '<div class="trip-doc-links"><a class="trip-doc-link" href="'+FLIGHT_FOLDER+'" target="_blank" rel="noopener noreferrer">🎫 Tarjetas de embarque en carpeta del vuelo</a></div>'+
-      '<div>El PDF de los tres pasajeros está guardado junto a la reserva. Pasar por el mostrador para verificar documentos.</div>';
-    card.appendChild(e);
-  }
   function inPrepare(doc){
     var p=doc.querySelector('#panel-preparar .prep-old');
     if(!p||doc.getElementById('trip-document-section'))return;
     var section=doc.createElement('section');section.id='trip-document-section';section.className='trip-doc-section';
     section.innerHTML='<h3>Documentos del viaje</h3>'+
-      '<div class="trip-doc-card"><strong>✈️ VJ933 · Narita → Hanói · 10 de noviembre</strong>'+
-      '<p>Check-in confirmado para Daniel (26A), Renzo (26B) y Verónica (26C). Las tres tarjetas de embarque están reunidas en un PDF dentro de la carpeta del vuelo.</p>'+
-      '<div class="trip-doc-links"><a class="trip-doc-link" href="'+FLIGHT_FOLDER+'" target="_blank" rel="noopener noreferrer">🎫 Ver documentos del vuelo</a></div></div>'+
       '<div class="trip-doc-card"><strong>🛂 Pasaportes y documentos de identidad</strong>'+
       '<p>Las copias originales ya están guardadas en Drive. Se conservan allí, con acceso restringido; no se cargan fotos ni números de pasaporte en la app.</p>'+
       '<div class="trip-doc-links"><a class="trip-doc-link" href="'+DOCUMENTS_FOLDER+'" target="_blank" rel="noopener noreferrer">🔒 Abrir carpeta privada de pasaportes</a></div></div>';
@@ -46,7 +28,7 @@
     if(heading)p.insertBefore(section,heading);else p.appendChild(section);
   }
   function run(){
-    try{var doc=frame.contentDocument;if(!doc)return;styles(doc);inReservations(doc);inPrepare(doc);}catch(e){console.error('Trip documents:',e);}
+    try{var doc=frame.contentDocument;if(!doc)return;styles(doc);inPrepare(doc);}catch(e){console.error('Trip documents:',e);}
   }
   frame.addEventListener('load',function(){(frame.contentWindow||window).setTimeout(run,100);});
   if(frame.contentDocument&&frame.contentDocument.readyState==='complete')run();
