@@ -219,6 +219,8 @@
   .day-card[data-leg="JP"] .place-chip{ color:var(--vermilion-ink); background:var(--vermilion-soft); }
   .maps-chip{ color:var(--jade-ink); background:none; padding:2px 0; text-decoration:underline; text-decoration-color:rgba(53,107,82,0.35); text-underline-offset:2px; }
   .pdf-chip{ color:var(--text); background:var(--paper-2); padding:4px 10px 4px 8px; text-decoration:none; }
+  .boarding-confirmed{font-size:11.5px;line-height:1.5;color:var(--text-muted);border-left:3px solid var(--jade);padding:7px 9px;margin:0 0 10px;background:var(--jade-soft);border-radius:0 7px 7px 0}
+  .boarding-confirmed strong{color:var(--jade-ink)}
   .pin-ic{ flex:none; }
 
   details.schedule{ margin-top:12px; }
@@ -2569,6 +2571,7 @@
   var PDF_LABELS = {
     perth_hanoi: "Ticket Perth → Hanoi",
     tokyo_hanoi: "Ticket Tokyo → Hanoi",
+    boarding_vj933: "Tarjetas de embarque · 3 pasajeros",
     hanoi_danang: "Ticket Hanoi → Da Nang",
     danang_taipei_osaka: "Ticket Da Nang → Taipei → Osaka",
     narita_christchurch: "Ticket Narita → Christchurch",
@@ -2584,6 +2587,7 @@
   var PDF_URLS={
     perth_hanoi:'https://drive.google.com/file/d/1NKUVLbh5ionuN_2KO-xt08KpgIQ22xRJ/view',
     tokyo_hanoi:'https://drive.google.com/file/d/1epa4TfSMFw4SnvViT5SvbL_CLl4Vz0HR/view',
+    boarding_vj933:'https://drive.google.com/file/d/1LwE28osf4fm6LIhyNeaAQNtiAGBDDTt4/view',
     hanoi_danang:'https://drive.google.com/file/d/1VoaAjVU37ww15meZJN384EL8VbDfBGLw/view',
     danang_taipei_osaka:'https://drive.google.com/file/d/1kC8V2_taDyDbymZs7UgcHstWifJdIfkH/view',
     narita_christchurch:'https://drive.google.com/file/d/114hX3KXnVZ3X6RVZ-6EtL1lZiOT0lHlh/view',
@@ -2915,11 +2919,13 @@
         var spec=findAccomMaps(r.desc)||findAccomMaps(r.proveedor||'');
         var mapLink=spec?' <a class="maps-chip" href="'+mapsHref(spec)+'" target="_blank" rel="noopener">'+PIN_SVG+' Ver en Maps</a>':'';
         var pdfLink=r.pdf==='ba_tokyo'?(pdfChip('ba_tokyo_dani')+pdfChip('ba_tokyo_vero')+pdfChip('ba_tokyo_renzo')+pdfChip('ba_tokyo')):(r.pdf?pdfChip(r.pdf):'');
+        if(r.pdf==='tokyo_hanoi')pdfLink+=pdfChip('boarding_vj933');
         if(/DisneySea/i.test(r.desc))mapLink+=' <a class="maps-chip" href="https://www.tokyodisneyresort.jp/en/tds/" target="_blank" rel="noopener">🎢 Sitio oficial</a>';
         var chips=(mapLink||pdfLink)?'<div class="chip-row">'+mapLink+pdfLink+'</div>':'';
+        var boardingInfo=r.pdf==='tokyo_hanoi'?'<p class="boarding-confirmed"><strong>✓ Check-in realizado</strong> · Grupo 3 · Daniel 26A · Renzo 26B · Verónica 26C · Embarque 08:50</p>':'';
         var ref=r.referencia?'<div class="ref-box"><span>'+nl2br(r.referencia)+'</span><button class="copy-btn" data-copy="'+esc(r.referencia.replace(/\n/g,' · '))+'">Copiar</button></div>':'';
         var notes=r.notas?'<details class="notes"><summary></summary><p>'+escConv(r.notas)+'</p></details>':'';
-        html+='<div class="res-card"><p class="res-card__title">'+esc(title)+'</p><p class="res-card__sub">'+esc(r.proveedor||'')+(sub?' · '+escConv(sub):'')+'<br>'+escConv(r.fechas||'')+'</p>'+chips+ref+notes+'</div>';
+        html+='<div class="res-card"><p class="res-card__title">'+esc(title)+'</p><p class="res-card__sub">'+esc(r.proveedor||'')+(sub?' · '+escConv(sub):'')+'<br>'+escConv(r.fechas||'')+'</p>'+chips+boardingInfo+ref+notes+'</div>';
       });
     });
     el.innerHTML=html;
