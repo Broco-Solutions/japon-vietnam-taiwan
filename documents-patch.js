@@ -25,14 +25,24 @@
     try{data=JSON.parse(node?node.textContent:'{}');}catch(e){return '';}
     var twac=data.documentacion&&data.documentacion.twacTaiwan;
     if(!twac||!Array.isArray(twac.viajeros)||!twac.viajeros.length)return '';
-    var cards=twac.viajeros.map(function(v){
+    var recibidos=twac.viajeros.filter(function(v){return v.estado==='recibida'&&v.pdf;});
+    var nombres=recibidos.map(function(v){return v.nombre;});
+    var esperados=Array.isArray(twac.viajerosEsperados)?twac.viajerosEsperados:twac.viajeros.map(function(v){return v.nombre;});
+    var faltantes=esperados.filter(function(nombre){return nombres.indexOf(nombre)===-1;});
+    var resumen=recibidos.length+' de '+esperados.length+' comprobantes TWAC cargados. Recibidos: '+nombres.join(', ')+'.';
+    if(faltantes.length)resumen+=' Faltan adjuntar: '+faltantes.join(', ')+'.';
+    var cards=recibidos.map(function(v){
+      var revisar=Boolean(v.salidaVueloDeclarado&&v.salidaVueloTarjeta&&v.salidaVueloDeclarado!==v.salidaVueloTarjeta);
+      var salida='Salida declarada '+v.salidaFecha+' en '+v.salidaVueloDeclarado+'.';
+      if(revisar)salida+=' La tarjeta de embarque indica '+v.salidaVueloTarjeta+': revisar y corregir el vuelo en el trámite oficial. El PDF guardado conserva la declaración recibida.';
+      else if(v.salidaVueloDeclarado&&v.salidaVueloTarjeta)salida+=' El vuelo de salida coincide con la tarjeta de embarque.';
+      else salida+=' Confirmar el vuelo de salida con la tarjeta de embarque.';
       var url=typeof v.pdf==='string'&&/^https:\/\/drive\.google\.com\//.test(v.pdf)?v.pdf:'';
       var link=url?'<div class="trip-doc-links"><a class="trip-doc-link" href="'+escapeHtml(url)+'" target="_blank" rel="noopener noreferrer">Ver TWAC de '+escapeHtml(v.nombre)+'</a></div>':'';
-      return '<div class="trip-doc-card trip-doc-card--review"><strong>Taiwán · TWAC de '+escapeHtml(v.nombre)+' recibido</strong>'+
-        '<p>Entrada '+escapeHtml(v.entradaFecha)+' en '+escapeHtml(v.entradaVuelo)+'. Salida declarada '+escapeHtml(v.salidaFecha)+' en '+escapeHtml(v.salidaVueloDeclarado)+', mientras la tarjeta de embarque indica '+escapeHtml(v.salidaVueloTarjeta)+'. Revisar y corregir el vuelo en el trámite oficial. El PDF guardado conserva la declaración recibida.</p>'+
-        '<p style="margin-top:8px">Es una tarjeta de llegada, no una aprobación de visa. Solo se recibió el comprobante de Renzo.</p>'+link+'</div>';
+      return '<div class="trip-doc-card'+(revisar?' trip-doc-card--review':'')+'"><strong>Taiwán · TWAC de '+escapeHtml(v.nombre)+' recibido'+(revisar?' · revisar vuelo':'')+'</strong>'+
+        '<p>Entrada '+escapeHtml(v.entradaFecha)+' en '+escapeHtml(v.entradaVuelo)+'. '+escapeHtml(salida)+'</p>'+link+'</div>';
     }).join('');
-    return '<div id="twac-taiwan-documents">'+cards+'</div>';
+    return '<div id="twac-taiwan-documents"><div class="trip-doc-card"><strong>Taiwán · tarjetas de llegada (TWAC)</strong><p>'+escapeHtml(resumen)+'</p><p style="margin-top:8px">Las tarjetas de llegada no acreditan aprobación de visa.</p></div>'+cards+'</div>';
   }
   function inPrepare(doc){
     var p=doc.querySelector('#panel-preparar .prep-old');
