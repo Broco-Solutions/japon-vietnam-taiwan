@@ -220,6 +220,10 @@
   .maps-chip{ color:var(--jade-ink); background:none; padding:2px 0; text-decoration:underline; text-decoration-color:rgba(53,107,82,0.35); text-underline-offset:2px; }
   .pdf-chip{ color:var(--text); background:var(--paper-2); padding:4px 10px 4px 8px; text-decoration:none; }
   .pin-ic{ flex:none; }
+  .boarding-confirmed{font-size:11.5px;line-height:1.5;color:var(--text-muted);border-left:3px solid var(--jade);padding:7px 9px;margin:0 0 10px;background:var(--jade-soft);border-radius:0 7px 7px 0}
+  .boarding-confirmed strong{color:var(--jade-ink)}
+  .boarding-confirmed__line{display:block;margin-top:4px}
+  .chip-row .pdf-chip{max-width:100%;white-space:normal;overflow-wrap:anywhere}
 
   details.schedule{ margin-top:12px; }
   details.schedule summary{
@@ -548,24 +552,30 @@
       "num": 12,
       "date": "Vie 20 Nov",
       "place": "Hoi An → Da Nang → Taipei",
-      "activity": "Check-out 12:00hs Hoi An. Traslado a Da Nang. Vuelo China Airlines CI790: Da Nang 17:35 → Taipei Taoyuan 21:20 (directo, 2h45, turista). Reserva Booking.com 40-1040127572, PIN 0870 · ref. aerolínea 9JCFH4. Equipaje: SOLO de mano (7kg), sin facturado. ⚠️ VERIFICAR si se necesita agregar equipaje facturado. Pasajeros (5): Alvaro Cesar Coirini, Milagros… (lista incompleta en el pedido).",
+      "activity": "Check-out 12:00 en Hoi An y traslado a Da Nang. CI790 de China Airlines: Da Nang (DAD, T2) 17:35 → Taipei Taoyuan (TPE, T1) 21:20, horas locales. Tarjeta recibida de Renzo: asiento 58J, zona 1; entrega de equipaje hasta 16:35, estar en puerta a las 16:55 y embarque 17:05. Puerta por confirmar en el aeropuerto. Para Renzo: 1 valija de 23 kg en bodega y 1 pieza de 7 kg en cabina. Las tarjetas de los otros cuatro viajeros todavía no están cargadas; verificar su equipaje individual. TWAC de Renzo recibido: revisar el vuelo de salida declarado antes de ingresar a Taiwán.",
       "stay": "Taipei – Guide Hotel Taipei Xinyi (承攜行旅-台北信義館). · No. · 15-2, Sec. · 2, Keelung Rd, Xinyi Dist., Taipei 110. · Tel +886 4 3509 5396. · Check-in 16:00 / check-out 21 Nov 11:00. · Confirmación Booking.com 6859.787.797, PIN 9631. · 2 habitaciones: Familiar Deluxe (3 pers., 2 camas dobles) + Doble Estándar (2 pers., 1 cama doble). · Aviso de llegada 23:00-00:00. · Cancelación gratis hasta 16 Nov 23:59.",
       "status": "✅ Confirmado",
       "leg": "TW",
       "pdfs": [
-        "danang_taipei_osaka"
+        "danang_taipei_osaka",
+        "boarding_ci790_renzo",
+        "twac_renzo"
       ]
     },
     {
       "num": 13,
       "date": "Sáb 21 Nov",
       "place": "Taipei → Osaka",
-      "activity": "Mañana breve en Taipei. Xiangshan al amanecer es OPCIONAL: el hotel se alcanza cerca de medianoche y la salida sería ~05:15; hacerlo solo si el grupo descansó y los escalones están secos. Alternativa tranquila: Four Four South Village + desayuno taiwanés. Check-out 11:00 y salida hacia Taoyuan alrededor de las 12:00 para el vuelo AirAsia X D7378 15:40 → Osaka KIX 19:20. Equipaje: SOLO 5 kg de cabina por persona, sin facturado — resolver antes del viaje.",
+      "activity": "Mañana breve en Taipei. Xiangshan al amanecer es opcional, solo si el grupo descansó y los escalones están secos; alternativa tranquila: Four Four South Village y desayuno taiwanés. Check-out 11:00, salida hacia Taoyuan alrededor de las 12:00 y objetivo aeropuerto T1 cerca de las 13:00. Vuelo actual AK176 de AirAsia: TPE T1 → Osaka KIX T1. Embarque 15:00, zona 2; estar en puerta para esa hora y confirmar la puerta en el aeropuerto. Las tarjetas no imprimen salida ni llegada: 15:40 → 19:20 corresponde a la reserva anterior D7378 y debe confirmarse para AK176. Cabina: 2 piezas con un máximo TOTAL de 7 kg entre ambas; equipaje de bodega no indicado. Tarjetas cargadas de Renzo, Dani, Vero y Mili (4 de 5); falta adjuntar la de Álvaro.",
       "stay": "Osaka – GRAND HOSTEL LDK Osaka Shinsaibashi. · Chuo-ku Shimanouchi 1-14-29, Chuo Ward, Osaka 542-0082. · Tel +81 6 6251 3900. · Check-in 15:00-22:00 / check-out 23 Nov 07:00-10:00. · Confirmación Booking.com 6246.418.867, PIN 4868. · 1 Habitación Familiar (5 pers., 6 literas, baño compartido). · Total aprox. · Cancelación gratis hasta 20 Nov. · Avisar si se llega después de las 22:00.",
       "status": "✅ Confirmado",
       "leg": "JP",
       "pdfs": [
-        "danang_taipei_osaka"
+        "danang_taipei_osaka",
+        "boarding_ak176_renzo",
+        "boarding_ak176_dani",
+        "boarding_ak176_vero",
+        "boarding_ak176_mili"
       ]
     },
     {
@@ -794,21 +804,49 @@
     },
     {
       "num": 9,
-      "desc": "Vuelo Da Nang → Taipei\nCI790 · 17:35 → 21:20 · directo 2h45 · 5 pax",
+      "desc": "Vuelo Da Nang → Taipei\nCI790 · salida 17:35 → llegada 21:20 · 5 viajeros",
       "proveedor": "China Airlines (vía Booking.com)",
-      "fechas": "Vie 20 Nov",
+      "fechas": "Vie 20 Nov · DAD Terminal 2 → TPE Terminal 1 · horas locales",
       "referencia": "Booking.com ref: 40-1040127572\nPIN: 0870\nRef. aerolínea: 9JCFH4",
-      "notas": "Pasajeros confirmados por el ticket: Alvaro Cesar Coirini, Milagros Ivonne Maese, Daniel Cesar Coirini, Veronica Gloria Robas, Renzo Daniel Coirini. · Equipaje: solo de mano (7kg p/persona), sin facturado.",
-      "pdf": "danang_taipei_osaka"
+      "notas": "Pasajeros de la reserva: Álvaro, Mili, Dani, Vero y Renzo. Tarjeta de embarque cargada solo de Renzo (1 de 5). Renzo: asiento 58J, zona 1. Entrega de equipaje hasta las 16:35; estar en puerta a las 16:55 (40 minutos antes de la salida), embarque 17:05 y salida 17:35. Puerta: consultar en el aeropuerto. Llegada a Taipei Taoyuan a las 21:20, Terminal 1. Equipaje confirmado para Renzo: 1 pieza de 23 kg en bodega (suma de dimensiones hasta 158 cm) y 1 pieza de 7 kg en cabina (56 × 36 × 23 cm). El equipaje de los demás viajeros debe verificarse con sus documentos individuales.",
+      "pdf": "danang_taipei_osaka",
+      "pdfLabel": "Reserva original · Da Nang → Taipei → Osaka",
+      "pdfs": [
+        "boarding_ci790_renzo"
+      ],
+      "boarding": {
+        "title": "Tarjeta cargada · Renzo · 1 de 5 viajeros",
+        "lines": [
+          "Asiento 58J · Zona 1 · DAD T2 → TPE T1.",
+          "Equipaje hasta 16:35 · Estar en puerta 16:55 · Embarque 17:05. Puerta por confirmar.",
+          "Renzo: bodega 1 × 23 kg + cabina 1 × 7 kg. Verificar individualmente a los otros cuatro."
+        ]
+      }
     },
     {
       "num": 10,
-      "desc": "Vuelo Taipei → Osaka (Kansai/KIX)\nD7378 · 15:40 → 19:20 · directo 2h40 · 5 pax",
-      "proveedor": "AirAsia X (vía Booking.com)",
-      "fechas": "Sáb 21 Nov",
+      "desc": "Vuelo Taipei → Osaka (Kansai/KIX)\nAK176 · embarque 15:00 · salida y llegada por confirmar · 5 viajeros",
+      "proveedor": "AirAsia · reserva original vía Booking.com",
+      "fechas": "Sáb 21 Nov · TPE Terminal 1 → KIX Terminal 1 · horas locales",
       "referencia": "Booking.com ref: 40-1040127572\nPIN: 0870\nRef. aerolínea: YYT55S",
-      "notas": "Pasajeros confirmados por el ticket: Alvaro Cesar Coirini, Milagros Ivonne Maese, Daniel Cesar Coirini, Veronica Gloria Robas, Renzo Daniel Coirini. · Equipaje: solo de mano (5kg p/persona), sin facturado.",
-      "pdf": "danang_taipei_osaka"
+      "notas": "Las cuatro tarjetas recibidas identifican AK176 de AirAsia. Renzo 27E, Dani 28E, Vero 28C y Mili 28D; zona 2. Embarque 15:00: estar en puerta para esa hora. La puerta se confirma en el aeropuerto. Salida y llegada no impresas en las tarjetas. El horario 15:40 → 19:20 pertenece a la reserva anterior D7378; confirmar el horario vigente de AK176. Cabina: 2 piezas con un máximo TOTAL de 7 kg entre ambas. Las tarjetas no indican la franquicia de bodega; verificarla por pasajero en la reserva. Hay 4 de 5 tarjetas cargadas: falta adjuntar la de Álvaro. La ausencia del archivo no confirma su estado de check-in.",
+      "pdf": "danang_taipei_osaka",
+      "pdfLabel": "Reserva anterior · D7378",
+      "pdfs": [
+        "boarding_ak176_renzo",
+        "boarding_ak176_dani",
+        "boarding_ak176_vero",
+        "boarding_ak176_mili"
+      ],
+      "boarding": {
+        "title": "Tarjetas cargadas · 4 de 5 viajeros",
+        "lines": [
+          "Renzo 27E · Dani 28E · Vero 28C · Mili 28D. Falta adjuntar la de Álvaro.",
+          "Embarque 15:00 · Zona 2 · TPE T1 → KIX T1. Puerta por confirmar.",
+          "Salida y llegada por confirmar. Las 15:00 corresponden al embarque.",
+          "Cabina: 2 piezas, 7 kg TOTAL entre ambas. Bodega no indicada en las tarjetas."
+        ]
+      }
     },
     {
       "num": 11,
@@ -1265,7 +1303,7 @@
         {
           "date": "Vie 20 Nov",
           "title": "HOI AN → DA NANG → TAIPEI",
-          "note": null,
+          "note": "Horarios locales. Los datos de equipaje y asiento del boarding corresponden solo a Renzo.",
           "entries": [
             {
               "hora": "09:00",
@@ -1279,18 +1317,33 @@
             },
             {
               "hora": "14:30",
-              "actividad": "Traslado a aeropuerto Da Nang (~45 min) — estar 15:30",
-              "notas": "CI790 17:35 · ref. 9JCFH4"
+              "actividad": "Traslado al aeropuerto Da Nang, Terminal 2 (~45 min)",
+              "notas": "Objetivo: llegar cerca de las 15:30 para CI790."
             },
             {
-              "hora": "17:35-21:20",
-              "actividad": "Vuelo China Airlines a Taipei (directo 2h45)",
-              "notas": "⚠️ SOLO equipaje de mano 7kg — verificar si agregan facturado"
+              "hora": "16:35",
+              "actividad": "Límite para entregar equipaje de CI790",
+              "notas": "Según la tarjeta de Renzo: 1 valija de 23 kg en bodega y 1 pieza de 7 kg en cabina. Verificar a los demás por separado."
             },
             {
-              "hora": "22:15",
+              "hora": "16:55",
+              "actividad": "Estar en la puerta de CI790",
+              "notas": "La tarjeta indica presentarse 40 minutos antes de la salida. Confirmar la puerta en el aeropuerto."
+            },
+            {
+              "hora": "17:05",
+              "actividad": "Embarque CI790",
+              "notas": "Renzo: zona 1, asiento 58J."
+            },
+            {
+              "hora": "17:35–21:20",
+              "actividad": "Vuelo China Airlines CI790 a Taipei (2 h 45 min)",
+              "notas": "DAD Terminal 2 → TPE Terminal 1. Horarios locales."
+            },
+            {
+              "hora": "22:15 aprox.",
               "actividad": "Taxi/MRT a Guide Hotel Taipei Xinyi · check-in",
-              "notas": "Conf 6859.787.797 · aviso de llegada 23:00–00:00 ya dado"
+              "notas": "Horario orientativo según llegada y trámites. Aviso de llegada 23:00–00:00 ya dado."
             }
           ]
         }
@@ -1306,42 +1359,47 @@
         {
           "date": "Sáb 21 Nov",
           "title": "TAIPEI → OSAKA",
-          "note": "Xiangshan es opcional: llegaron cerca de medianoche. Priorizar descanso si llueve o durmieron menos de 5 horas.",
+          "note": "Xiangshan es opcional: priorizar descanso. Embarque AK176 confirmado en las tarjetas a las 15:00; salida y llegada deben verificarse. El plan de Osaka depende de la llegada real.",
           "entries": [
             {
               "hora": "05:15",
               "actividad": "OPCIONAL · Taxi a Xiangshan y mirador Six Giant Rocks",
-              "notas": "Solo con grupo descansado y escalones secos; amanecer ~6:14"
+              "notas": "Solo con grupo descansado y escalones secos; amanecer ~6:14."
             },
             {
               "hora": "07:30",
-              "actividad": "Four Four South Village (3 min del Taipei 101) + desayuno taiwanés",
+              "actividad": "Four Four South Village + desayuno taiwanés",
               "notas": null
             },
             {
               "hora": "11:00",
-              "actividad": "Check-out y salida hacia Taoyuan alrededor de las 12:00",
-              "notas": "Objetivo: aeropuerto ~13:00 para D7378 15:40 · ref. YYT55S"
+              "actividad": "Check-out; salida hacia Taoyuan alrededor de las 12:00",
+              "notas": "Objetivo: aeropuerto Terminal 1 cerca de las 13:00. Confirmar el horario de salida de AK176."
             },
             {
-              "hora": "15:40-19:20",
-              "actividad": "Vuelo AirAsia X a Osaka KIX (directo 2h40)",
-              "notas": "⚠️ SOLO mano 5kg — verificar facturado"
+              "hora": "15:00",
+              "actividad": "Embarque AK176 · AirAsia",
+              "notas": "Estar en puerta para esta hora. Zona 2; Renzo 27E, Dani 28E, Vero 28C, Mili 28D. Puerta por confirmar."
             },
             {
-              "hora": "20:15",
+              "hora": "Por confirmar",
+              "actividad": "Salida de Taipei y llegada a Osaka KIX · AK176",
+              "notas": "Las tarjetas no indican esos horarios. Reserva anterior D7378: 15:40 → 19:20; confirmar para AK176. TPE T1 → KIX T1. Cabina: 2 piezas, 7 kg TOTAL. Bodega no indicada."
+            },
+            {
+              "hora": "Según llegada",
               "actividad": "Tren Nankai KIX → Namba (~45 min) + caminata al hostel",
-              "notas": null
+              "notas": "Traslado orientativo; ajustar según el aterrizaje y los trámites de ingreso."
             },
             {
-              "hora": "21:30",
+              "hora": "Según llegada",
               "actividad": "Check-in GRAND HOSTEL LDK Shinsaibashi",
-              "notas": "Conf 6246.418.867 · ⚠️ avisar si llegan después de 22:00"
+              "notas": "Avisar al alojamiento si la llegada será después de las 22:00."
             },
             {
-              "hora": "22:00",
-              "actividad": "Dotonbori nocturno (queda al lado): cartel Glico + cena rápida",
-              "notas": null
+              "hora": "Si hay tiempo",
+              "actividad": "Dotonbori nocturno: cartel Glico y cena",
+              "notas": "Opcional después de llegar al alojamiento."
             }
           ]
         },
@@ -2127,6 +2185,21 @@
           "estado": "sin_comprobante"
         }
       ]
+    },
+    "twacTaiwan": {
+      "carpeta": "https://drive.google.com/drive/folders/1KPsx-aqxEW-XwB-7jynHqmdEdkRpltW7",
+      "viajeros": [
+        {
+          "nombre": "Renzo",
+          "estado": "recibida",
+          "entradaFecha": "20/11/2026",
+          "entradaVuelo": "CI790",
+          "salidaFecha": "21/11/2026",
+          "salidaVueloDeclarado": "D7378",
+          "salidaVueloTarjeta": "AK176",
+          "pdf": "https://drive.google.com/file/d/1re2VfvMBlHHS9N5uzl-Z988T5Cpl6P2A/view?usp=drivesdk"
+        }
+      ]
     }
   }
 }
@@ -2565,10 +2638,16 @@
 
   /* ============ PDFs adjuntos (comprobantes reales, embebidos en el archivo) ============ */
   var PDF_LABELS = {
+    boarding_ci790_renzo: "Embarque CI790 · Renzo",
+    boarding_ak176_renzo: "Embarque AK176 · Renzo",
+    boarding_ak176_dani: "Embarque AK176 · Dani",
+    boarding_ak176_vero: "Embarque AK176 · Vero",
+    boarding_ak176_mili: "Embarque AK176 · Mili",
+    twac_renzo: "TWAC · Renzo",
     perth_hanoi: "Ticket Perth → Hanoi",
     tokyo_hanoi: "Ticket Tokyo → Hanoi",
     hanoi_danang: "Ticket Hanoi → Da Nang",
-    danang_taipei_osaka: "Ticket Da Nang → Taipei → Osaka",
+    danang_taipei_osaka: "Reserva original · Da Nang → Taipei → Osaka",
     narita_christchurch: "Ticket Narita → Christchurch",
     ba_tokyo: "Carpeta de pasajes vigentes (3)",
     ba_tokyo_dani: "PDF Dani",
@@ -2580,6 +2659,12 @@
   };
 
   var PDF_URLS={
+    boarding_ci790_renzo:"https://drive.google.com/file/d/1k1eTihbelrSoK-fozeshXnT8cNZ_BAQk/view?usp=drivesdk",
+    boarding_ak176_renzo:"https://drive.google.com/file/d/1O4IZIjEWnYv4xlmdXA5UYjgARX8pVyRZ/view?usp=drivesdk",
+    boarding_ak176_dani:"https://drive.google.com/file/d/1FkxCZKqTiFY7mNX6pLVG55ApILpYWkaE/view?usp=drivesdk",
+    boarding_ak176_vero:"https://drive.google.com/file/d/105X5tMh2aLRdAYFX3GNUXb6jjnhWjQOK/view?usp=drivesdk",
+    boarding_ak176_mili:"https://drive.google.com/file/d/1L9xhVsIM8a6LXQpzpLzvOGD1MUbGje8c/view?usp=drivesdk",
+    twac_renzo:"https://drive.google.com/file/d/1re2VfvMBlHHS9N5uzl-Z988T5Cpl6P2A/view?usp=drivesdk",
     perth_hanoi:'https://drive.google.com/file/d/1NKUVLbh5ionuN_2KO-xt08KpgIQ22xRJ/view',
     tokyo_hanoi:'https://drive.google.com/file/d/1epa4TfSMFw4SnvViT5SvbL_CLl4Vz0HR/view',
     hanoi_danang:'https://drive.google.com/file/d/1VoaAjVU37ww15meZJN384EL8VbDfBGLw/view',
@@ -2901,6 +2986,14 @@
     return 'Otros';
   }
 
+  function boardingInfoHtml(reservation){
+    var info=reservation.boarding;
+    if(!info||!Array.isArray(info.lines))return '';
+    return '<p class="boarding-confirmed"><strong>'+esc(info.title)+'</strong>'+info.lines.map(function(line){
+      return '<span class="boarding-confirmed__line">'+esc(line)+'</span>';
+    }).join('')+'</p>';
+  }
+
   function renderReservas(){
     var el=document.getElementById('panel-reservas'),html='';
     var cats={'Vuelos':[],'Traslados':[],'Alojamiento':[],'Restaurantes':[],'Tours y excursiones':[],'Otros':[]};
@@ -2912,12 +3005,14 @@
         var lines=(r.desc||'').split('\n'),title=lines[0],sub=lines.slice(1).join(' · ');
         var spec=findAccomMaps(r.desc)||findAccomMaps(r.proveedor||'');
         var mapLink=spec?' <a class="maps-chip" href="'+mapsHref(spec)+'" target="_blank" rel="noopener">'+PIN_SVG+' Ver en Maps</a>':'';
-        var pdfLink=r.pdf==='ba_tokyo'?(pdfChip('ba_tokyo_dani')+pdfChip('ba_tokyo_vero')+pdfChip('ba_tokyo_renzo')+pdfChip('ba_tokyo')):(r.pdf?pdfChip(r.pdf):'');
+        var pdfLink=r.pdf==='ba_tokyo'?(pdfChip('ba_tokyo_dani')+pdfChip('ba_tokyo_vero')+pdfChip('ba_tokyo_renzo')+pdfChip('ba_tokyo')):(r.pdf?pdfChip(r.pdf,r.pdfLabel):'');
+        pdfLink+=(r.pdfs||[]).map(function(key){return pdfChip(key);}).join('');
         if(/DisneySea/i.test(r.desc))mapLink+=' <a class="maps-chip" href="https://www.tokyodisneyresort.jp/en/tds/" target="_blank" rel="noopener">🎢 Sitio oficial</a>';
         var chips=(mapLink||pdfLink)?'<div class="chip-row">'+mapLink+pdfLink+'</div>':'';
+        var boardingInfo=boardingInfoHtml(r);
         var ref=r.referencia?'<div class="ref-box"><span>'+nl2br(r.referencia)+'</span><button class="copy-btn" data-copy="'+esc(r.referencia.replace(/\n/g,' · '))+'">Copiar</button></div>':'';
         var notes=r.notas?'<details class="notes"><summary></summary><p>'+escConv(r.notas)+'</p></details>':'';
-        html+='<div class="res-card"><p class="res-card__title">'+esc(title)+'</p><p class="res-card__sub">'+esc(r.proveedor||'')+(sub?' · '+escConv(sub):'')+'<br>'+escConv(r.fechas||'')+'</p>'+chips+ref+notes+'</div>';
+        html+='<div class="res-card" data-res-num="'+esc(r.num)+'"><p class="res-card__title">'+esc(title)+'</p><p class="res-card__sub">'+esc(r.proveedor||'')+(sub?' · '+escConv(sub):'')+'<br>'+escConv(r.fechas||'')+'</p>'+chips+boardingInfo+ref+notes+'</div>';
       });
     });
     el.innerHTML=html;
@@ -2947,7 +3042,7 @@
     'Solicitar y descargar las eVisas de Vietnam para quienes viajen con pasaporte argentino.',
     'Tramitar la visa de visitante de Taiwán: Argentina no figura en la exención ni en la eVisa general.',
     'Solicitar la NZeTA de Álvaro y Mili para Nueva Zelanda.',
-    'Agregar equipaje facturado o redistribuir peso en CI790 (7 kg) y D7378 (5 kg).',
+    'Verificar equipaje por pasajero: CI790 de Renzo incluye 1 × 23 kg en bodega y 1 × 7 kg en cabina; AK176 permite 2 piezas con 7 kg TOTAL y no detalla bodega.',
     'Resolver alojamiento y plan de Tokyo del 7 al 10 Nov para papá, mamá y Renzo.',
     'Reservar la noche del 8 al 9 Dic en Tokyo para Álvaro y Mili.',
     'Reconfirmar Tầm Vị para el 12 Nov a las 18:15: el comprobante dice 12 Oct.',
@@ -2966,6 +3061,17 @@
     }).join(' · ');
   }
 
+  function taiwanArrivalHtml(){
+    var twac=DATA.documentacion&&DATA.documentacion.twacTaiwan;
+    if(!twac||!Array.isArray(twac.viajeros)||!twac.viajeros.length)return '';
+    var cards=twac.viajeros.map(function(v){
+      return '<article class="travel-alert"><div class="travel-alert__top"><span class="travel-alert__tag">Recibida · revisar vuelo</span><span class="travel-alert__title">'+esc(v.nombre)+' · TWAC</span></div>'+
+        '<p class="travel-alert__copy">Entrada '+esc(v.entradaFecha)+' en '+esc(v.entradaVuelo)+'. Salida declarada '+esc(v.salidaFecha)+' en '+esc(v.salidaVueloDeclarado)+', mientras la tarjeta de embarque indica '+esc(v.salidaVueloTarjeta)+'. Revisar y corregir el vuelo en el trámite oficial. El PDF guardado conserva la declaración recibida.</p>'+
+        '<p class="travel-alert__copy">Es una tarjeta de llegada, no una aprobación de visa. Solo se recibió el comprobante de Renzo. <a href="'+esc(v.pdf)+'" target="_blank" rel="noopener noreferrer">Ver TWAC de '+esc(v.nombre)+'</a></p></article>';
+    }).join('');
+    return '<h2 class="prep-heading">Taiwán · tarjeta de llegada (TWAC)</h2><div class="alert-stack">'+cards+'</div>';
+  }
+
   function renderPreparar(){
     var el = document.getElementById('panel-preparar');
     var checks = PREP_CHECKS.map(function(item, idx){
@@ -2982,8 +3088,8 @@
       '<h2 class="prep-heading">Primero, resolver esto</h2><div class="alert-stack">' +
         '<article class="travel-alert urgent"><div class="travel-alert__top"><span class="travel-alert__tag">Crítico</span><span class="travel-alert__title">Visas de Vietnam y Taiwán</span></div>' +
           '<p class="travel-alert__copy">Si viajan con pasaporte argentino, Vietnam exige visa previa. Para Taiwán, Argentina no aparece en la lista de exención ni en la eVisa general: corresponde una visa de visitante. Revisar y tramitar con las autoridades antes de emitir servicios no reembolsables. <a href="https://eviet.cancilleria.gob.ar/es/visas-5" target="_blank" rel="noopener">Vietnam</a> · <a href="https://www.boca.gov.tw/np-137-2.html" target="_blank" rel="noopener">Taiwán</a></p></article>' +
-        '<article class="travel-alert urgent"><div class="travel-alert__top"><span class="travel-alert__tag">Crítico</span><span class="travel-alert__title">El equipaje no cierra con 5 kg</span></div>' +
-          '<p class="travel-alert__copy">CI790 permite 7 kg y D7378 solo 5 kg de cabina, sin valija facturada. Para una ruta de 0–27°C y 30 días, conviene agregar equipaje ahora o diseñar una redistribución concreta entre los cinco.</p></article>' +
+        '<article class="travel-alert urgent"><div class="travel-alert__top"><span class="travel-alert__tag">Crítico</span><span class="travel-alert__title">Equipaje: revisar cada tramo y pasajero</span></div>' +
+          '<p class="travel-alert__copy">La tarjeta CI790 de Renzo incluye 1 valija de 23 kg en bodega y 1 pieza de 7 kg en cabina. Las cuatro tarjetas AK176 indican 2 piezas de cabina con 7 kg TOTAL entre ambas, sin detallar bodega. Verificar el equipaje de cada viajero; todavía faltan documentos por cargar.</p></article>' +
         '<article class="travel-alert urgent"><div class="travel-alert__top"><span class="travel-alert__tag">Hueco real</span><span class="travel-alert__title">Narita 9–10 Nov, tres viajeros</span></div>' +
           '<p class="travel-alert__copy">El vuelo nuevo QR806 de Qatar Airways llega a Narita el 9 Nov a las 18:20. Dani, Vero y Renzo tienen reservado Richmond Hotel Narita hasta el 10 Nov. VJ933 sale a Hanói el 10 Nov a las 09:30. Hay que corregir Visit Japan Web: QR806 desde Doha reemplaza a AC5 desde Montreal.</p></article>' +
         '<article class="travel-alert"><div class="travel-alert__top"><span class="travel-alert__tag">Pendiente</span><span class="travel-alert__title">Noche del 8 al 9 Dic</span></div>' +
@@ -2994,6 +3100,7 @@
           '<p class="travel-alert__copy">El HTML contiene tickets, PIN, teléfonos y comprobantes embebidos. Usarlo como bitácora privada y compartirlo solo con el grupo.</p></article>' +
       '</div>' +
 
+      taiwanArrivalHtml()+
       '<h2 class="prep-heading">Checklist del grupo</h2><div class="check-meta" id="check-meta" aria-live="polite">0 de ' + PREP_CHECKS.length + ' listos</div>' +
         '<div class="check-progress" aria-hidden="true"><span id="check-progress-fill"></span></div><div class="checklist">' + checks + '</div>' +
 
