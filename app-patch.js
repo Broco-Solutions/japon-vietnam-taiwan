@@ -122,6 +122,7 @@ function rebuildPrepare(doc,data){
  '</div>'+
  renderCanadaEtas(data)+
  '<div class="prep-old__alert amber"><span class="prep-old__label">Acción necesaria</span><strong>Visit Japan Web: vuelo reemitido</strong><p>Dani, Vero y Renzo llegan a Narita el 9 Nov a las 18:20 con QR806 (Qatar Airways, desde Doha). Actualizar la primera entrada: ya no es AC5 desde Montreal a las 16:30. Revisar nuevamente los QR de Migraciones y Aduana.</p></div>'+ 
+ '<div class="prep-old__alert amber"><span class="prep-old__label">Antes de subir</span><strong>Trenes y buses de Japón</strong><p>Para los trenes JR reservados, retirar los billetes antes de subir. El 27 Nov: QR y código de identificación. El 29 Nov y 1 Dic: tarjeta física utilizada y código de identificación. El bus a Shirakawa-go ya tiene ida y vuelta: mostrar el e-ticket, con copia impresa de respaldo. El Romancecar requiere billete base o freepass aparte del suplemento confirmado. <a href="https://drive.google.com/drive/folders/1i_C33gUEpByNGM_HQMaFYWc8O6CLQWcV" target="_blank" rel="noopener noreferrer">Ver los 6 comprobantes</a>.</p></div>'+
  '<h3>Antes de salir</h3><div class="prep-old__quick">'+
  '<div class="prep-old__quick-card"><span>🛂</span><strong>Documentos offline</strong><p>Pasaportes, visas, vuelos, reservas y direcciones clave descargadas en los teléfonos.</p></div>'+
  '<div class="prep-old__quick-card"><span>📶</span><strong>Conectividad lista</strong><p>eSIM/SIM, roaming de respaldo y mapas offline para los días de llegada.</p></div>'+
