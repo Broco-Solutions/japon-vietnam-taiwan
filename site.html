@@ -1050,7 +1050,8 @@
           "El PDF no detalla nombre del tren, coche ni asientos; verificarlos en los billetes."
         ]
       },
-      "notas": "Incluye billete base. Este QR es para el retiro; no acredita que ya se hayan retirado los billetes. Andén no indicado."
+      "notas": "Incluye billete base. Este QR es para el retiro; no acredita que ya se hayan retirado los billetes. Andén no indicado.",
+      "startDate": "2026-11-27"
     },
     {
       "num": 31,
@@ -1065,7 +1066,8 @@
           "El PDF no detalla nombre del tren, coche ni asientos; verificarlos en los billetes."
         ]
       },
-      "notas": "Incluye billete base. Este QR es para el retiro; no acredita que ya se hayan retirado los billetes. Andén no indicado."
+      "notas": "Incluye billete base. Este QR es para el retiro; no acredita que ya se hayan retirado los billetes. Andén no indicado.",
+      "startDate": "2026-11-27"
     },
     {
       "num": 32,
@@ -1081,7 +1083,8 @@
           "Conexión en Nagoya: 20 min. Para retirar: tarjeta física utilizada y código de identificación de 4 dígitos."
         ]
       },
-      "notas": "Incluye billete base. Los asientos corresponden al grupo; el PDF no asigna nombres a cada asiento. No hay constancia de retiro de los billetes. Andenes no indicados."
+      "notas": "Incluye billete base. Los asientos corresponden al grupo; el PDF no asigna nombres a cada asiento. No hay constancia de retiro de los billetes. Andenes no indicados.",
+      "startDate": "2026-11-29"
     },
     {
       "num": 33,
@@ -1097,7 +1100,8 @@
           "Mostrar el e-ticket al conductor antes de salir. Se acepta en el teléfono; recomiendan una copia impresa."
         ]
       },
-      "notas": "Estancia en Shirakawa-go entre 09:00 y 13:30: 4 h 30 min, incluyendo el regreso a la parada. Revisar avisos de servicio antes de viajar. Asientos del grupo sin asignación nominal."
+      "notas": "Estancia en Shirakawa-go entre 09:00 y 13:30: 4 h 30 min, incluyendo el regreso a la parada. Revisar avisos de servicio antes de viajar. Asientos del grupo sin asignación nominal.",
+      "startDate": "2026-11-30"
     },
     {
       "num": 34,
@@ -1113,7 +1117,8 @@
           "Conexión en Nagoya: 57 min. Retirar con la tarjeta física utilizada y el código de identificación de 4 dígitos, fuera de los molinetes."
         ]
       },
-      "notas": "Incluye billete base. Asientos reservados de clase ordinaria, no fumador. Los asientos corresponden al grupo, sin asignación nominal. No hay constancia de retiro. El traslado posterior de Odawara a Hakone no figura en este comprobante."
+      "notas": "Incluye billete base. Asientos reservados de clase ordinaria, no fumador. Los asientos corresponden al grupo, sin asignación nominal. No hay constancia de retiro. El traslado posterior de Odawara a Hakone no figura en este comprobante.",
+      "startDate": "2026-12-01"
     },
     {
       "num": 35,
@@ -1129,7 +1134,8 @@
           "Para viajar también hace falta un billete base o freepass válido; este comprobante no lo incluye."
         ]
       },
-      "notas": "Para volver a abrir la pantalla, usar Confirm booking; guardar la página en favoritos no recupera la confirmación. Asientos del grupo sin asignación nominal. Llegada a Shinjuku, Tokyo."
+      "notas": "Para volver a abrir la pantalla, usar Confirm booking; guardar la página en favoritos no recupera la confirmación. Asientos del grupo sin asignación nominal. Llegada a Shinjuku, Tokyo.",
+      "startDate": "2026-12-03"
     }
   ],
   "horarios": [
@@ -3210,7 +3216,8 @@
         var boardingInfo=boardingInfoHtml(r);
         var ref=r.referencia?'<div class="ref-box"><span>'+nl2br(r.referencia)+'</span><button class="copy-btn" data-copy="'+esc(r.referencia.replace(/\n/g,' · '))+'">Copiar</button></div>':'';
         var notes=r.notas?'<details class="notes"><summary></summary><p>'+escConv(r.notas)+'</p></details>':'';
-        html+='<div class="res-card" data-res-num="'+esc(r.num)+'"><p class="res-card__title">'+esc(title)+'</p><p class="res-card__sub">'+esc(r.proveedor||'')+(sub?' · '+escConv(sub):'')+'<br>'+escConv(r.fechas||'')+'</p>'+chips+boardingInfo+ref+notes+'</div>';
+        var dateAttr=r.startDate?' data-res-date="'+esc(r.startDate)+'"':'';
+        html+='<div class="res-card" data-res-num="'+esc(r.num)+'"'+dateAttr+'><p class="res-card__title">'+esc(title)+'</p><p class="res-card__sub">'+esc(r.proveedor||'')+(sub?' · '+escConv(sub):'')+'<br>'+escConv(r.fechas||'')+'</p>'+chips+boardingInfo+ref+notes+'</div>';
       });
     });
     el.innerHTML=html;

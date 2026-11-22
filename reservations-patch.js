@@ -44,6 +44,17 @@ function dateInfo(text){
  while((m=single.exec(text))){var d2=+m[1],mon2=months[m[2].toLowerCase()],key2=new Date(2026,mon2,d2).getTime();if(!best||key2<best.key)best={key:key2,date:new Date(2026,mon2,d2),label:d2+' '+m[2]};}
  return best||{key:new Date(2026,11,31).getTime(),date:new Date(2026,11,31),label:'Sin fecha'};
 }
+function reservationDateInfo(card){
+ // Explicit dates keep grouping independent of adjacent DOM text and notes.
+ var iso=card.getAttribute('data-res-date')||'',m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+ if(m){
+   var year=+m[1],month=+m[2]-1,day=+m[3],date=new Date(year,month,day);
+   if(date.getFullYear()===year&&date.getMonth()===month&&date.getDate()===day){
+     return {key:date.getTime(),date:date,label:day+' '+['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'][month]};
+   }
+ }
+ return dateInfo(card.textContent||'');
+}
 function dateHeader(doc,date,count){
  var days=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],months=['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
  var h=doc.createElement('div');h.className='res-date-head';
@@ -94,7 +105,7 @@ function build(doc){
  if(!records.length)return;
  var hasNarita=records.some(function(r){var txt=(r.card.textContent||'').toLowerCase();return r.type==='Alojamiento'&&txt.indexOf('narita')>=0&&/9\s*nov/i.test(txt);});
  if(!hasNarita)records.push(makeNarita(doc));
- records.forEach(function(r){var info=r.manual?{key:new Date(2026,10,9).getTime(),date:new Date(2026,10,9),label:'9–10 Nov'}:dateInfo(r.card.textContent||'');r.info=info;addMeta(doc,r,info);});
+ records.forEach(function(r){var info=r.manual?{key:new Date(2026,10,9).getTime(),date:new Date(2026,10,9),label:'9–10 Nov'}:reservationDateInfo(r.card);r.info=info;addMeta(doc,r,info);});
  records.sort(function(a,b){if(a.info.key!==b.info.key)return a.info.key-b.info.key;return TYPE_ORDER.indexOf(a.type)-TYPE_ORDER.indexOf(b.type);});
  panel.innerHTML='';panel.dataset.timelineBuilt='1';panel.classList.add('res-timeline');
  var intro=doc.createElement('div');intro.className='res-timeline-intro';intro.innerHTML='<h2>Reservas por fecha</h2><p>Ordenadas como sucede el viaje. Usá los filtros para ver vuelos, traslados, alojamientos, tours o restaurantes.</p>';panel.appendChild(intro);
