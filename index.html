@@ -3222,7 +3222,7 @@
         if(r.pdf==='tokyo_hanoi')boardingInfo='<p class="boarding-confirmed"><strong>✓ Check-in realizado</strong> · Grupo 3 · Daniel 26A · Renzo 26B · Verónica 26C · Embarque 08:50</p>';
         var ref=r.referencia?'<div class="ref-box"><span>'+nl2br(r.referencia)+'</span><button class="copy-btn" data-copy="'+esc(r.referencia.replace(/\n/g,' · '))+'">Copiar</button></div>':'';
         var notes=r.notas?'<details class="notes"><summary></summary><p>'+escConv(r.notas)+'</p></details>':'';
-        var dateAttr=r.startDate?' data-res-date="'+esc(r.startDate)+'"':'';
+        var dateAttr=(r.startDate?' data-res-date="'+esc(r.startDate)+'"':'')+(r.fechas?' data-res-period="'+esc(r.fechas)+'"':'');
         html+='<div class="res-card" data-res-num="'+esc(r.num)+'"'+dateAttr+'><p class="res-card__title">'+esc(title)+'</p><p class="res-card__sub">'+esc(r.proveedor||'')+(sub?' · '+escConv(sub):'')+'<br>'+escConv(r.fechas||'')+'</p>'+chips+boardingInfo+ref+notes+'</div>';
       });
     });
@@ -3505,7 +3505,7 @@
 })();
 </script>
 <script src="app-patch.js?v=20261123-japan-transport"></script>
-<script src="reservations-patch.js?v=20261123-transport-dates"></script>
+<script src="reservations-patch.js?v=20261123-reservation-periods"></script>
 <script src="narita-patch.js?v=20261107-vuelos-reemitidos-1"></script>
 <script src="map-patch.js?v=20261018-3"></script>
 <script src="finance-ui.js?v=20261018-3"></script>

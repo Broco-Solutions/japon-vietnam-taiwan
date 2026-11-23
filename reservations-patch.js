@@ -53,7 +53,8 @@ function reservationDateInfo(card){
      return {key:date.getTime(),date:date,label:day+' '+['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'][month]};
    }
  }
- return dateInfo(card.textContent||'');
+ var period=card.getAttribute('data-res-period');
+ return dateInfo(period&&period.trim()?period:(card.textContent||''));
 }
 function dateHeader(doc,date,count){
  var days=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],months=['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];

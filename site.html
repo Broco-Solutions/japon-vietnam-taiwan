@@ -3216,7 +3216,7 @@
         var boardingInfo=boardingInfoHtml(r);
         var ref=r.referencia?'<div class="ref-box"><span>'+nl2br(r.referencia)+'</span><button class="copy-btn" data-copy="'+esc(r.referencia.replace(/\n/g,' · '))+'">Copiar</button></div>':'';
         var notes=r.notas?'<details class="notes"><summary></summary><p>'+escConv(r.notas)+'</p></details>':'';
-        var dateAttr=r.startDate?' data-res-date="'+esc(r.startDate)+'"':'';
+        var dateAttr=(r.startDate?' data-res-date="'+esc(r.startDate)+'"':'')+(r.fechas?' data-res-period="'+esc(r.fechas)+'"':'');
         html+='<div class="res-card" data-res-num="'+esc(r.num)+'"'+dateAttr+'><p class="res-card__title">'+esc(title)+'</p><p class="res-card__sub">'+esc(r.proveedor||'')+(sub?' · '+escConv(sub):'')+'<br>'+escConv(r.fechas||'')+'</p>'+chips+boardingInfo+ref+notes+'</div>';
       });
     });
